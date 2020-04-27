@@ -4,7 +4,7 @@
 \usepackage{listings}
 
 % \usepackage{graphicx} %package to manage images
-\graphicspath{{./images}}
+\graphicspath{{./images/}}
 
 \begin{document}
 
@@ -112,6 +112,7 @@ Repeating this equation until convergence will give the minima. \footnote[1]{$x_
 
 \subsubsection{Feature Scaling}
 Feature Scaling is used to reduce the number of iterations in Gradient Descent. Basic idea of feature scaling is to bring all the features on the same scale. (in general we try to approximate every feature in the range $ -1 < x_i < 1 $)
+\\ \\ Reducing the number of iteration doesn't mean making computation of each step easier. And also it does not effect comtational efficiency of Normal Equation.
 
 \subsubsection{Mean Normalisation}
 Mean Normalisation makes features to have approximately zero mean.
