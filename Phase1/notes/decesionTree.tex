@@ -112,7 +112,7 @@ It uses a tree-like model of decesion. It typically starts with a single node, w
 		\caption{Feature 1: Balance}
 	\end{figure}
 	The dots are the data points with class right-off and the stars are the non-write-offs. Splitting the parent node on attribute balance gives us 2 child nodes. The left node gets 13 of the total observations with 12/13 ( 0.92 probability) observations from the write-off class and only 1/13( 0.08 probability) observations from the non-write of class. The right node gets 17 of the total observation with 13/17( 0.76 probability) observations from the non-write-off class and 4/17 ( 0.24 probability) from the write-off class.
-	\\ \\Let’s calculate the entropy for the parent node and see how much uncertainty the tree can reduce by splitting on Balance.	
+	\\ \\Let’s calculate\footnote[1]{See this for calculations and further refrences: \href{https://towardsdatascience.com/entropy-how-decision-trees-make-decisions-2946b9c18c8}{Entropy: How Decesion Trees Make Decesions}} the entropy for the parent node and see how much uncertainty the tree can reduce by splitting on Balance.	
 	Splitting on feature ,“Balance” leads to an information gain of 0.37 on our target variable. Let’s do the same thing for feature, “Residence” to see how it compares.\\ 
 	\begin{figure}[h]
 		\centering
@@ -127,7 +127,5 @@ It uses a tree-like model of decesion. It typically starts with a single node, w
 	By itself the feature, Balance provides more information about our target variable than Residence. It reduces more disorder in our target variable. A decision tree algorithm would use this result to make the first split on our data using Balance. From here on, the decision tree algorithm would use this process at every split to decide what feature it is going to split on next. In a real world scenario , with more than two features the first split is made on the most informative feature and then at every split the information gain for each additional feature needs to be recomputed because it would not be the same as the information gain from each feature by itself. The entropy and information gain would have to be calculated after one or more splits have already been made which would change the results. A decision tree would repeat this process as it grows deeper and deeper till either it reaches a pre-defined depth or no additional split can result in a higher information gain beyond a certain threshold which can also usually be specified as a hyper-parameter!
 \\ \\
 	There you have it! You now know what entropy and information gain are and how they are computed. You understand how a decision tree either by itself or in a tree based ensemble decides on the best order of features to split on and decides when to stop when it trains itself on given data. If you every have to explain the intricacies of how decision trees work to someone, hopefully you won’t do too bad.\\
-
-	See this for calculations and further refrences: \href{https://towardsdatascience.com/entropy-how-decision-trees-make-decisions-2946b9c18c8}{Entropy: How Decesion Trees Make Decesions}
 
 \end{document}
