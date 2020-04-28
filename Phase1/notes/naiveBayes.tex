@@ -83,7 +83,25 @@ Without going to deep, let's see an example:
 			P(x_i|y) = \frac{1}{\sqrt{2\pi\sigma_y^2}}e^{-\frac{(x_i-\mu_y)^2}{2\sigma_y^2}}
 		\end{equation}
 
+\subsection*{Laplace Smoothing}
+	It is problematic when a frequency-based probability is zero, because it will wipe out all the information in the other probabilities.\\ \\
+	A solution would be \textbf{Laplace smoothing} , which is a technique for smoothing categorical data. A small-sample correction, or \textbf{pseudo-count}, will be incorporated in every probability estimate. Consequently, no probability will be zero. this is a way of regularizing Naive Bayes, and when the pseudo-count is zero, it is called Laplace smoothing. While in the general case it is often called \textbf{Lidstone smoothing.}
+
+	\begin{equation}
+		P_{i, \alpha-smoothed} = \frac{x_i+\alpha}{N+\alpha d}
+	\end{equation}
+	where, $\alpha > 0$ the "pseudocount" is a smoothing parameter. And, $1/d$ is the \href{https://en.wikipedia.org/wiki/Discrete_uniform_distribution}{Uniform Probability}.
+
+	\subsubsection*{Note}
+	In practice, we use logs to represent probabilities:
+	\begin{equation}
+		\log{(P(x_1|y)P(x_2|y)...P(x_n|y))} = \log{P(x_1|y)} + \log{P(x_2|y)} +...+ \log{P(x_n|y)}
+	\end{equation}
+
+
 \subsection*{Applications}
 	Naive Bayes algorithms are mostly used in sentiment analysis, spam filtering, recommendation systems etc. They are fast and easy to implement but their biggest disadvantage is that the requirement of predictors to be independent. In most of the real life cases, the predictors are dependent, this hinders the performance of the classifier.
+
+
 
 \end{document}
