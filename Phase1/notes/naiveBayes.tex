@@ -88,7 +88,7 @@ Without going to deep, let's see an example:
 	A solution would be \textbf{Laplace smoothing} , which is a technique for smoothing categorical data. A small-sample correction, or \textbf{pseudo-count}, will be incorporated in every probability estimate. Consequently, no probability will be zero. this is a way of regularizing Naive Bayes, and when the pseudo-count is zero, it is called Laplace smoothing. While in the general case it is often called \textbf{Lidstone smoothing.}
 
 	\begin{equation}
-		P_{i, \alpha-smoothed} = \frac{x_i+\alpha}{N+\alpha d}
+		P_{i,\ \alpha-smoothed} = \frac{x_i+\alpha}{N+\alpha d}
 	\end{equation}
 	where, $\alpha > 0$ the "pseudocount" is a smoothing parameter. And, $1/d$ is the \href{https://en.wikipedia.org/wiki/Discrete_uniform_distribution}{Uniform Probability}.
 
