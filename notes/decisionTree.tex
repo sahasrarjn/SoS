@@ -1,59 +1,3 @@
-\documentclass[12pt, A4]{report}
-\usepackage[utf8]{inputenc}
-
-\usepackage{graphicx}
-\graphicspath{{./images/}}
-
-\usepackage{listings}
-\usepackage{xcolor}
-
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-
-\lstdefinestyle{mystyle}{
-    backgroundcolor=\color{backcolour},   
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\footnotesize,
-    breakatwhitespace=false,         
-    breaklines=true,                 
-    captionpos=b,                    
-    keepspaces=true,                 
-    numbers=left,                    
-    numbersep=5pt,                  
-    showspaces=false,                
-    showstringspaces=false,
-    showtabs=false,                  
-    tabsize=2
-}
-
-\lstset{style=mystyle}
-
-\usepackage{hyperref}
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,      
-    urlcolor=cyan,
-}
-
-\urlstyle{same}
-
-
-\title{\textbf{Decision Tree}\\ \large{Supervised ML Algorithm}}
-\author{Sahasra Ranjan}
-\date{April 2020}
-
-\begin{document}
-
-\begin{titlepage}
-\maketitle
-\end{titlepage}
-
 A decision tree is a map of the possible outcomes of a series of a related choices. It allows to weigh possible actions against one another based of various factors.\par
 It uses a tree-like model of decision. It typically starts with a single node, which branches into possible outcomes. Each of those outcomes leads to additional nodes, which branch off into other possiblities. 
 
@@ -132,13 +76,13 @@ It uses a tree-like model of decision. It typically starts with a single node, w
 	\begin{equation}\label{eq:inforamtion gain}
 		IG(Y,X) = E(Y) - E(Y|X)
 	\end{equation}
-	Basics of inforation gain is well explained here: \href{https://victorzhou.com/blog/information-gain/}{A Simple Explanation of Information Gain and Entropy}
+	Basics of information gain is well explained here: \href{https://victorzhou.com/blog/information-gain/}{A Simple Explanation of Information Gain and Entropy}
 
 \subsection*{Example: Decision Tree}
 	Consider an example where we are building a decision tree to predict whether a loan given to a person would result in a write-off or not. Our entire population consists of 30 instances. 16 belong to the write-off class and the other 14 belong to the non-write-off class. We have two features, namely “Balance” that can take on two values: “$<$ 50K” or “$>$ 50K” and “Residence” that can take on three values: “OWN”, “RENT” or “OTHER”. I’m going to show you how a decision tree algorithm would decide what attribute to split on first and what feature provides more information, or reduces more uncertainty about our target variable out of the two using the concepts of Entropy and Information Gain.
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=10cm, height=7.5cm]{tree1.png}
+		\includegraphics[scale=0.5]{tree1.png}
 		\caption{Feature 1: Balance}
 	\end{figure}
 	The dots are the data points with class right-off and the stars are the non-write-offs. Splitting the parent node on attribute balance gives us 2 child nodes. The left node gets 13 of the total observations with 12/13 ( 0.92 probability) observations from the write-off class and only 1/13( 0.08 probability) observations from the non-write of class. The right node gets 17 of the total observation with 13/17( 0.76 probability) observations from the non-write-off class and 4/17 ( 0.24 probability) from the write-off class.
@@ -146,7 +90,7 @@ It uses a tree-like model of decision. It typically starts with a single node, w
 	Splitting on feature ,“Balance” leads to an information gain of 0.37 on our target variable. Let’s do the same thing for feature, “Residence” to see how it compares.\\ 
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=10cm, height=7.5cm]{tree2.png}
+		\includegraphics[scale=0.6]{tree2.png}
 		\caption{Feature 2: Residence}
 	\end{figure}
 	\\
@@ -158,7 +102,5 @@ It uses a tree-like model of decision. It typically starts with a single node, w
 	\\ \\
 	There you have it! You now know what entropy and information gain are and how they are computed. You understand how a decision tree either by itself or in a tree based ensemble decides on the best order of features to split on and decides when to stop when it trains itself on given data. If you every have to explain the intricacies of how decision trees work to someone, hopefully you won’t do too bad.\\
 
-\subsection*{Implementation}
+\subsection*{Worked-out Implementation}
 \lstinputlisting[language=Python, caption=Python Implementation for Decision Tree]{dtScratch.py}
-
-\end{document}

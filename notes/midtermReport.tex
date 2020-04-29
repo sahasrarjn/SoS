@@ -1,0 +1,300 @@
+\documentclass[12pt, A4]{report}
+\usepackage[pdftex]{graphicx}
+\usepackage[margin=1.2in]{geometry}
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx}
+\graphicspath{{./images/}}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{titlesec}
+ 
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries}{}{0pt}{\Huge}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\urlstyle{same}
+
+
+\title{\textbf{Neural Network and Machine Learning}\\\large{Midterm Report for Summer of Science - 2020}}
+\author{Name: Sahasra Ranjan\\Mentor: Amitrajit Bhattacharjee}
+\date{Roll no.: 190050102}
+
+\begin{document}
+
+\begin{titlepage}
+\maketitle
+\end{titlepage}
+
+Machine Learning is undeniably one of the most influential and powerful technologies in today’s world. It is a tool for turning information into knowledge. In the past 50 years, there has been an explosion of data. This mass of data is useless unless we analyse it and find the patterns hidden within. Machine learning techniques are used to automatically find the valuable underlying patterns within complex data that we would otherwise struggle to discover. The hidden patterns and knowledge about a problem can be used to predict future events and perform all kinds of complex decision making.\\\\
+There are multiple forms of Machine Learning; supervised, unsupervised , semi-supervised and reinforcement learning. Each form of Machine Learning has differing approaches, but they all follow the same underlying process and theory. I'll cover supervised and unsupervised learning for my report.
+
+\section*{Supervised and Unsupervised Learning}
+  The most basic thing to remember is that we already know what out correct output should look like in Supervised Learning.
+  But, we have little or no idea about what out results should look like.\\
+
+  \textbf{Supervised Learning:}
+  \begin{itemize}
+    \item Classification: Spam/Not-spam. 
+    \item Regression: Predicting age.
+  \end{itemize}
+
+  \textbf{Unsupervised Learning:}
+  \begin{itemize}
+    \item Clustering: Grouping based on different variables.
+    \item Non Clustering: Finding structue in chaotic environment.
+  \end{itemize}
+
+\chapter{Linear Regression}
+  Regression being a part of Supervised Learning is used for estimatng data wiht real-valued output.  
+
+  \subsection*{Cost Function}
+    This function measures the performance of a Machine Learning model for given data.
+
+    \textbf{Hypothesis}: $ h_ \theta(x) = \theta_0 + \theta_1x $
+
+    \textbf{Parameters:} $ \theta_0, \theta_1 $
+
+    \textbf{Cost Function:} 
+    \begin{equation} \label {eq:1}
+        J( \theta_0, \theta_1 ) = 1/2m \sum_{i=1}^{m} (h_\theta(x^{(i)})-y^{(i)})^2 
+    \end{equation} 
+
+    \textbf{Goal:} Minimize cost function with $ \theta_0, \theta_1 $ as parameters.
+
+  \subsection*{Gradient Descent}
+
+    \textbf{Basic idea:}
+    \begin{itemize}
+    \item Start with some $ \theta_0, \theta_1 $
+    \item Keep changing $ \theta_0, \theta_1 $ to reduce $ J(\theta_0, \theta_1) $ until we end up at minima.
+    \end{itemize} 
+
+    \textbf{Algorithm:}
+     repeat until convergence:
+    \begin{equation} \label {eq:2}
+        \theta_j := \theta_j - \alpha \frac{\partial {J(\theta_0, \theta_1)}}{\partial \theta_j}
+    \end{equation} 
+
+    (for  $j = 0, 1 $  ,here).  
+
+    \textbf{Intution:} 
+    If $\alpha$ is too small, descent can be slow and if too large, descent may fail to converge or even diverge.
+    Gradient descent can converge to a local minimum, even with fixed learning rate $\alpha$. As we approach local mimimum, gradient descent will automatically take smaller steps. So, no need to decrease $\alpha$ over time. 
+
+  \subsection*{Gradient Descent for linear regression}
+    Combining gradient descent algorithm with linear regression model, we get:
+
+    \begin{equation} \label {eq:3}
+        j = 0 : \frac{\partial {J(\theta_0, \theta_1)}}{\partial \theta_0} = 1/2 \sum_{i=1}^{m} (h_\theta(x^{(i)})-y^{(i)}) 
+    \end{equation}
+
+    \begin{equation} \label {eq:4}
+        j = 1 : \frac{\partial {J(\theta_0, \theta_1)}}{\partial \theta_1} = 1/2 \sum_{i=1}^{m} (h_\theta(x^{(i)})-y^{(i)}).x^{(i)}
+    \end{equation}
+
+    Now, we can repeat \ref{eq:3} and \ref{eq:4} until convergence to obtain the minima.
+
+    "Batch" gradient descent: Each step of gradient descent uses all the training examples.
+    For eq. "m" batches in equation \ref{eq:1}.
+
+
+\section*{Multivariate Linear Regression}
+  Linear regression involving more than one variable. For eq., Predicting price of a house based on parameters "Plot Area", "No. of Floors", "Connectivity with markets", etc.
+
+  \subsection*{Multiple Features}
+    The multivariable form of the hypothesis is as follows:
+    \begin{equation} \label {eq:5}
+        h_\theta(x) = \theta_0 + \theta_1x_1 + \theta_2x_2 + \theta_ 3x_3 + ... + \theta_{n}x_n.    
+    \end{equation}
+    This hypothesis funtion can be concisely represented as:
+    \begin{equation}
+        h_\theta(x) = \theta^{T}x
+    \end{equation}
+    where, $ \theta^T $ is a 1xn matrix consisting of $ \theta_0, \theta_1, \theta_2 ... \theta_n $.
+
+
+  \subsection*{Gradient Descent for Multiple Variables}
+    Gradient descent formula for Multiple variable will be similar to that of single variable.
+
+    \begin{equation} \label {eq: GD for multiple}
+        \theta_j =  \theta_j - \alpha \frac{1}{m} \sum_{i=1}^{m} (h_\theta(x^{(i)})-y^{(i)}).x_j^{(i)}
+    \end{equation}
+
+    Repeating this equation until convergence will give the minima. \footnote[1]{$x_0 = 1$ in equation \ref{eq: GD for multiple}}
+
+  \subsubsection*{Feature Scaling}
+    Feature Scaling is used to reduce the number of iterations in Gradient Descent. Basic idea of feature scaling is to bring all the features on the same scale. (in general we try to approximate every feature in the range $ -1 < x_i < 1 $)
+    \\ \\ Reducing the number of iteration doesn't mean making computation of each step easier. And also it does not effect comtational efficiency of Normal Equation.
+
+  \subsubsection*{Mean Normalisation}
+    Mean Normalisation makes features to have approximately zero mean.
+
+  \subsubsection*{Learning Rate}
+    If $\alpha$ is too small: slow convergence.\\ \\
+    if $\alpha$ is too large: $J(\theta)$ may not decrease on every iteration, or may not converge.
+
+  \subsubsection*{Polynomial Regression}
+    Selecting proper polynomial for fitting data is very important.
+
+    \begin{figure}[h]
+        \includegraphics[scale = 0.6]{polyreg.png}
+    \end{figure}
+
+    \textbf{Red:} Quadratic
+
+    \textbf {Blue:} Square root funtion $ \theta_0+\theta_1x+\theta_2\sqrt{x} $
+
+    \textbf {Green:} Cubic function
+\\ \\
+
+\section*{Normal equation}
+  Normal Equation is a method to solve for $\theta_T$ analytically, by creating a $m\times(n+1)$ matrix $X$ and another $m\times1$ matrix $Y$.\footnote[2]{Every element of first column of matrix $X$ is 1 and other are the feature's coefficient}
+
+  Mathematically $\theta$ is given as:
+  \begin{equation} \label {eq: theta}
+    \theta = (X^TX)^{-1}X^ty
+  \end{equation}
+
+  \begin{tabular}{ |c|c|}
+    \hline
+    \textbf{Gradient Descent} & \textbf{Normal Equation} \\
+    \hline
+    Need to choose $\alpha$ & No need to choose $\alpha$ \\
+    Needs many iteration & Don't need to iterate \\
+    Works well with large n & Slow for large n \\
+    \hline
+  \end{tabular}
+
+  \vspace{5mm}
+
+  \subsubsection*{Reasons for non-invertiblity of $X^T X$}
+    \begin{itemize}
+        \item Redundant features (linear dependence) \footnote[3]{Eg. Using both $m^2 \  \& \  (feet)^2$ features}
+        \item Too many features (m $<=$ n) 
+    \end{itemize}
+
+\section*{Classification and Represention}
+
+
+  \subsection*{Classification}
+    The classification problem is just like the regression problem, except that the values we now want to predict take on onle a small number of discrete values. For now, we'll discuss binary classification problem.
+
+  \subsection*{Hypothesis Representation}
+    We may use out old regression algorithm by classifying data on the basis of a threshold. But it will have very poor performance.\\ 
+    \\We will introduce "Sigmoid Function", also called the "Logistic Function":
+    \begin{equation}
+      h_\theta(x) = g(\theta^{T}x)
+    \end{equation}
+    \begin{equation}
+      z = \theta^{T}x
+    \end{equation}
+    \begin{equation}\label{eq:sigmoid}
+      g(z) = \frac{1}{1+e^{-z}}
+    \end{equation}
+    This is how the Sigmoid Function looks like:
+    \begin{figure}[h]
+      \centering
+      \includegraphics[scale = 1]{sigmoid.png}
+      \caption{Sigmoid Funtion \ref{eq:sigmoid}}
+    \end{figure}
+
+  \subsection*{Decision Boundary}
+    The decision boundary is the line that separates the area where y=0 and where y=1.\\
+    It is similar to the decision boundary for linear regression, the only difference is distibution of values (linear and sigmoid)
+
+  \subsection*{Worked-out Example}
+	\lstinputlisting[language=Octave, caption=Octave Implementation for Linear Regression Algorithms]{linearRegression.m}
+
+\chapter{Logistic Regression}
+
+  \subsection*{Cost Function}
+    Cost funtion for logistic regression looks like:
+
+    \begin{equation}
+      J(\theta) = \frac{1}{m}\sum_{i=1}^{m}Cost(h_\theta(x^{(i)}), y^{(i)})
+    \end{equation}
+    \\ \\
+    $ Cost(h_\theta(x),y) = -\log{(h_\theta{(x)})} $ \hfill if $y = 1$
+    \\ \\
+    $Cost(h_\theta(x),y) = -\log{(1-h_\theta{(x)})}$  \hfill if $y = 0$
+
+    \begin{figure}[h]
+      \centering
+      \includegraphics[scale = 0.75]{costlog.png}
+      \caption{Cost Funtion}
+    \end{figure}
+
+    \subsubsection*{Siplified Cost Funtion}
+    This cost funtion can be compressed into a single funtion:
+    \begin{equation}
+      Cost(h_\theta(x),y) = -y\log{(h_\theta{(x)})} -(1-y)\log{(1-h_\theta{(x)})}
+    \end{equation}
+    A vectorised implementation is: \\ \\
+    $h = g(X\theta)$\\
+    $J(\theta) = \frac{1}{m}.(-y^T\log{h}-(1-y)^T\log{1-h})$
+    \\ \\
+    Vectorised implementation for Gradient Descent: \\ \\
+    $\theta := \theta - \frac{\alpha}{m}X^T(g(X\theta)-y)$
+
+\section*{Multiclass Classification}
+  \subsection*{One-vs-all}
+    This approach is when data has more than two categories.We divide our problem into n\footnote[1]{n = no of categories in dataset} binary classification problems, in each one, we predict the probability considering one of the category to be $+$ve and all other to be $-$ve. Repeating this for all other categories will finally give us all the decision boundaries.
+    \begin{figure}[h]
+      \centering
+      \includegraphics[scale = 0.6]{oneall.png}
+      \caption{One vs all classifiaction method}
+    \end{figure}   
+
+  \subsection*{Worked-out Example}
+	\lstinputlisting[language=Octave, caption=Octave Implementation for Logistic Regression Algorithms]{logisticRegression.m}
+
+
+\chapter{Decision Tree}
+\input{decisionTree}
+
+\chapter{Naive Bayes}
+\input{naiveBayes}
+
+
+\chapter{k-Nearest Neighbours}
+\input{KNN}
+
+\chapter{Revised Plan of Action}
+\input{poa-midterm}
+
+\end{document}

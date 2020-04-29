@@ -1,58 +1,4 @@
-\documentclass[12pt, A4]{report}
-\usepackage[utf8]{inputenc}
-
-\usepackage{graphicx}
-\graphicspath{{./images/}}
-
-\usepackage{listings}
-\usepackage{xcolor}
-
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-
-\lstdefinestyle{mystyle}{
-    backgroundcolor=\color{backcolour},   
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\footnotesize,
-    breakatwhitespace=false,         
-    breaklines=true,                 
-    captionpos=b,                    
-    keepspaces=true,                 
-    numbers=left,                    
-    numbersep=5pt,                  
-    showspaces=false,                
-    showstringspaces=false,
-    showtabs=false,                  
-    tabsize=2
-}
-
-\lstset{style=mystyle}
-
-\usepackage{hyperref}
-\hypersetup{
-	colorlinks=true,
-	linkcolor=blue,
-	filecolor=magenta,      
-	urlcolor=cyan,
-}
-
-\urlstyle{same}
-
-
-\title{\textbf{Naive Bayes}\\ \large{Supervised ML Algorithm}}
-\author{Sahasra Ranjan}
-\date{April 2020}
-
-\begin{document}
-
-\begin{titlepage}
-\maketitle
-\end{titlepage}
+\section*{Naive Bayes}
 
 Naive Bayes methods are a set of supervised learning algorithms based on applying Bayes' theorem with the "naive" assumption of conditional independence between every pair of features given the value of class variable.\\ \\
 What actually Bayes' theorem is?
@@ -67,7 +13,7 @@ Without going to deep, let's see an example:
 	Consider the problem of playing golf, dataset for the same:
 	\begin{figure}[h]
 		\centering
-		\includegraphics[scale=0.4]{golf.png}
+		\includegraphics[scale=0.7]{golf.png}
 		\caption{Dataset for possiblity of a golf match}
 	\end{figure}
 
@@ -103,7 +49,7 @@ Without going to deep, let's see an example:
 
 		\begin{figure}[h]
 			\centering
-			\includegraphics[scale=0.4]{gaussiannaive.png}
+			\includegraphics[scale=0.6]{gaussiannaive.png}
 			\caption{Gaussian Distribution(Normal Distribution)}
 		\end{figure}
 
@@ -132,8 +78,5 @@ Without going to deep, let's see an example:
 \subsection*{Applications}
 	Naive Bayes algorithms are mostly used in sentiment analysis, spam filtering, recommendation systems etc. They are fast and easy to implement but their biggest disadvantage is that the requirement of predictors to be independent. In most of the real life cases, the predictors are dependent, this hinders the performance of the classifier.
 
-\subsection*{Implementation}
+\subsection*{Worked-out Implementation}
 \lstinputlisting[language=Python, caption=Python Implementation for Naive Bayes]{naiveBayes-implementation.py}
-
-
-\end{document}

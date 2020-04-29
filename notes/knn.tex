@@ -1,63 +1,6 @@
-\documentclass[12pt, A4]{report}
-
-\usepackage[utf8]{inputenc}
-\usepackage{graphicx}
-\graphicspath{{./images/}}
-
-\usepackage{listings}
-\usepackage{xcolor}
-
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-
-\lstdefinestyle{mystyle}{
-    backgroundcolor=\color{backcolour},   
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\footnotesize,
-    breakatwhitespace=false,         
-    breaklines=true,                 
-    captionpos=b,                    
-    keepspaces=true,                 
-    numbers=left,                    
-    numbersep=5pt,                  
-    showspaces=false,                
-    showstringspaces=false,
-    showtabs=false,                  
-    tabsize=2
-}
-
-\lstset{style=mystyle}
-
-
-\usepackage{hyperref}
-\hypersetup{
-	colorlinks=true,
-	linkcolor=blue,
-	filecolor=magenta,      
-	urlcolor=cyan,
-}
-
-\urlstyle{same}
-
-
-\title{\textbf{K-Nearest Neighbours}\\ \large{Supervised ML Algorithm}}
-\author{Sahasra Ranjan}
-\date{April 2020}
-
-\begin{document}
-
-\begin{titlepage}
-\maketitle
-\end{titlepage}
-
 K-Nearest Neighbours is one of the most basic yet essential algorithms in Machine Learning. It has intense application in pattern recognition, data mining and intrusion detection.
 
-\subsection*{The algorithm}
+\subsection*{The Algorithm}
 	\begin{enumerate}
 		\item Load the data
 		\item Initialize K
@@ -97,14 +40,11 @@ K-Nearest Neighbours is one of the most basic yet essential algorithms in Machin
 	KNN’s main disadvantage of becoming significantly slower as the volume of data increases makes it an impractical choice in environments where predictions need to be made rapidly. Moreover, there are faster algorithms that can produce more accurate classification and regression results.\\ \\
 	However, provided you have sufficient computing resources to speedily handle the data you are using to make predictions, KNN can still be useful in solving problems that have solutions that depend on identifying similar objects. An example of this is using the KNN algorithm in recommender systems, an application of KNN-search.
 
-\subsection*{Implementation}
+\subsection*{Worked-out Implementation}
 \lstinputlisting[language=Python, caption=Python Implementation for K-Nearest Neighbours Algorithm]{kNN-implementation.py}
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.8]{kNNplot.png}
-	\caption{Matplotlib plot for above implementation}
+	\caption{Matplotlib plot for the above implementation}
 \end{figure}
-
-
-\end{document}
