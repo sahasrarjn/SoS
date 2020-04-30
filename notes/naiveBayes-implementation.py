@@ -76,16 +76,3 @@ for i in test.index:
 print("Test 2")
 print(sum(b),"correct of",len(test))
 print("Accuracy:",sum(b)/len(test))
-
-
-'''
-Output:
-
-23 columns, after dropping NA, 22
-Test 1
-5671 correct of 5687
-Accuracy: 0.997186565851943
-Test 2
-2433 correct of 2437
-Accuracy: 0.9983586376692655
-'''

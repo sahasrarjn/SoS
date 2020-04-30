@@ -64,8 +64,8 @@ Machine Learning is undeniably one of the most influential and powerful technolo
 There are multiple forms of Machine Learning; supervised, unsupervised , semi-supervised and reinforcement learning. Each form of Machine Learning has differing approaches, but they all follow the same underlying process and theory. I'll cover supervised and unsupervised learning for my report.
 
 \section*{Supervised and Unsupervised Learning}
-  The most basic thing to remember is that we already know what out correct output should look like in Supervised Learning.
-  But, we have little or no idea about what out results should look like.\\
+  The most basic thing to remember is that we already know what our correct output should look like in Supervised Learning.
+  But, we have little or no idea about what our results should look like.\\
 
   \textbf{Supervised Learning:}
   \begin{itemize}
@@ -80,7 +80,7 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
   \end{itemize}
 
 \chapter{Linear Regression}
-  Regression being a part of Supervised Learning is used for estimatng data wiht real-valued output.  
+  Regression being a part of Supervised Learning is used for estimating data with real-valued output.  
 
   \subsection*{Cost Function}
     This function measures the performance of a Machine Learning model for given data.
@@ -113,8 +113,8 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
     (for  $j = 0, 1 $  ,here).  
 
     \textbf{Intution:} 
-    If $\alpha$ is too small, descent can be slow and if too large, descent may fail to converge or even diverge.
-    Gradient descent can converge to a local minimum, even with fixed learning rate $\alpha$. As we approach local mimimum, gradient descent will automatically take smaller steps. So, no need to decrease $\alpha$ over time. 
+    If $\alpha$ is too small, the descent can be slow and if too large, descent may fail to converge or even diverge.
+    Gradient descent can converge to a local minimum, even with a fixed learning rate $\alpha$. As we approach local minimum, gradient descent will automatically take smaller steps. So, no need to decrease $\alpha$ over time. 
 
   \subsection*{Gradient Descent for linear regression}
     Combining gradient descent algorithm with linear regression model, we get:
@@ -134,7 +134,7 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
 
 
 \section*{Multivariate Linear Regression}
-  Linear regression involving more than one variable. For eq., Predicting price of a house based on parameters "Plot Area", "No. of Floors", "Connectivity with markets", etc.
+  Linear regression involving more than one variable. For eq., Predicting the price of a house based on parameters "Plot Area", "No. of Floors", "Connectivity with markets", etc.
 
   \subsection*{Multiple Features}
     The multivariable form of the hypothesis is as follows:
@@ -149,7 +149,7 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
 
 
   \subsection*{Gradient Descent for Multiple Variables}
-    Gradient descent formula for Multiple variable will be similar to that of single variable.
+    Gradient descent formula for Multiple variables will be similar to that of a single variable.
 
     \begin{equation} \label {eq: GD for multiple}
         \theta_j =  \theta_j - \alpha \frac{1}{m} \sum_{i=1}^{m} (h_\theta(x^{(i)})-y^{(i)}).x_j^{(i)}
@@ -158,8 +158,8 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
     Repeating this equation until convergence will give the minima. \footnote[1]{$x_0 = 1$ in equation \ref{eq: GD for multiple}}
 
   \subsubsection*{Feature Scaling}
-    Feature Scaling is used to reduce the number of iterations in Gradient Descent. Basic idea of feature scaling is to bring all the features on the same scale. (in general we try to approximate every feature in the range $ -1 < x_i < 1 $)
-    \\ \\ Reducing the number of iteration doesn't mean making computation of each step easier. And also it does not effect comtational efficiency of Normal Equation.
+    Feature Scaling is used to reduce the number of iterations in Gradient Descent.The basic idea of feature scaling is to bring all the features on the same scale. (in general we try to approximate every feature in the range $ -1 < x_i < 1 $)
+    \\ \\ Reducing the number of iteration doesn't mean making computation of each step easier. And also it does not affect computational efficiency of Normal Equation.
 
   \subsubsection*{Mean Normalisation}
     Mean Normalisation makes features to have approximately zero mean.
@@ -212,7 +212,7 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
 
 
   \subsection*{Classification}
-    The classification problem is just like the regression problem, except that the values we now want to predict take on onle a small number of discrete values. For now, we'll discuss binary classification problem.
+    The classification problem is just like the regression problem, except that the values we now want to predict take on only a small number of discrete values. For now, we'll discuss the binary classification problem.
 
   \subsection*{Hypothesis Representation}
     We may use out old regression algorithm by classifying data on the basis of a threshold. But it will have very poor performance.\\ 
@@ -235,7 +235,7 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
 
   \subsection*{Decision Boundary}
     The decision boundary is the line that separates the area where y=0 and where y=1.\\
-    It is similar to the decision boundary for linear regression, the only difference is distibution of values (linear and sigmoid)
+    It is similar to the decision boundary for linear regression, the only difference is distribution of values (linear and sigmoid)
 
   \subsection*{Worked-out Example}
 	\lstinputlisting[language=Octave, caption=Octave Implementation for Linear Regression Algorithms]{linearRegression.m}
