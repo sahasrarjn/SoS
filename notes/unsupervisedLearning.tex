@@ -1,0 +1,31 @@
+Unsupervised learning is a type of machine learning that looks for previously undetected patterns in a data set with no pre-existing labels and with a minimum of human supervision. In contrast to supervised learning that usually makes use of human-labeled data, unsupervised learning, also known as self-organization allows for modeling of probability densities over inputs. It forms one of the three main categories of machine learning, along with supervised and reinforcement learning. Semi-supervised learning, a related variant, makes use of supervised and unsupervised techniques.
+
+\section{K-Means Clustering Algorithm}
+	Kmeans algorithm is an iterative algorithm that tries to partition the dataset into K pre-defined distinct non-overlapping subgroups (clusters) where each data point belongs to only one group. It tries to make the intra-cluster data points as similar as possible while also keeping the clusters as different (far) as possible. It assigns data points to a cluster such that the sum of the squared distance between the data points and the cluster’s centroid (arithmetic mean of all the data points that belong to that cluster) is at the minimum. The less variation we have within clusters, the more homogeneous (similar) the data points are within the same cluster.\\\\
+
+	The way kmeans algorithm works is as follows:
+	\begin{enumerate}
+		\item Specify number of clusters K.
+		\item Initialize centroids by first shuffling the dataset and then randomly selecting K data points for the centroids without replacement.
+		\item Keep iterating until there is no change to the centroids. i.e assignment of data points to clusters isn’t changing: 
+		\begin{itemize}
+			\item Compute the sum of the squared distance between data points and all centroids.
+			\item Assign each data point to the closest cluster (centroid).
+			\item Compute the centroids for the clusters by taking the average of the all data points that belong to each cluster.
+		\end{itemize}
+	\end{enumerate}
+
+	\subsection{\textbf{The Elbow Method}: Choosing the number of clusters}
+		For the k-means clustering method, the most common approach for choosing the number of clusters is the so-called \textbf{elbow method}. It involves running the algorithm multiple times over a loop, with an increasing number of cluster choice and then plotting a clustering score as a function of the number of clusters.\\
+
+		What is the score or metric which is being plotted for the elbow method? Why is it called the ‘elbow’ method?\\
+
+		A typical plot looks like following,
+
+		\begin{figure}[h]
+			\centering
+			\includegraphics[scale=0.35]{elbow.png}
+			\caption{Elbow Method: Score plot}
+		\end{figure}
+
+		The score is, in general, a measure of the input data on the k-means objective function i.e. \textbf{some form of intra-cluster distance relative to inner-cluster distance}.
