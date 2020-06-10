@@ -1,0 +1,377 @@
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{!}pip install torch torchvision
+\PY{o}{!}pip install \PY{n+nv}{Pillow}\PY{o}{=}\PY{o}{=}\PY{l+m}{4}.0.0
+\end{Verbatim}
+\end{tcolorbox}  
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\PY{k+kn}{import} \PY{n+nn}{torch}
+\PY{k+kn}{import} \PY{n+nn}{torch}\PY{n+nn}{.}\PY{n+nn}{optim} \PY{k}{as} \PY{n+nn}{optim}
+\PY{k+kn}{from} \PY{n+nn}{torchvision} \PY{k+kn}{import} \PY{n}{transforms}\PY{p}{,} \PY{n}{models}
+\PY{k+kn}{from} \PY{n+nn}{PIL} \PY{k+kn}{import} \PY{n}{Image}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{vgg} \PY{o}{=} \PY{n}{models}\PY{o}{.}\PY{n}{vgg19}\PY{p}{(}\PY{n}{pretrained}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{o}{.}\PY{n}{features}
+
+\PY{k}{for} \PY{n}{params} \PY{o+ow}{in} \PY{n}{vgg}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{params}\PY{o}{.}\PY{n}{requires\PYZus{}grad\PYZus{}}\PY{p}{(}\PY{k+kc}{False}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Downloading: "https://download.pytorch.org/models/vgg19-dcbb9e9d.pth" to
+/home/sahasra/.cache/torch/checkpoints/vgg19-dcbb9e9d.pth
+    \end{Verbatim}
+
+    
+    \begin{verbatim}
+HBox(children=(FloatProgress(value=0.0, max=574673361.0), HTML(value='')))
+    \end{verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{device} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{device}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CUDA}\PY{l+s+s1}{\PYZsq{}} \PY{k}{if} \PY{n}{torch}\PY{o}{.}\PY{n}{cuda}\PY{o}{.}\PY{n}{is\PYZus{}available}\PY{p}{(}\PY{p}{)} \PY{k}{else} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cpu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{vgg}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Sequential(
+  (0): Conv2d(3, 64, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (1): ReLU(inplace=True)
+  (2): Conv2d(64, 64, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (3): ReLU(inplace=True)
+  (4): MaxPool2d(kernel\_size=2, stride=2, padding=0, dilation=1,
+ceil\_mode=False)
+  (5): Conv2d(64, 128, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (6): ReLU(inplace=True)
+  (7): Conv2d(128, 128, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (8): ReLU(inplace=True)
+  (9): MaxPool2d(kernel\_size=2, stride=2, padding=0, dilation=1,
+ceil\_mode=False)
+  (10): Conv2d(128, 256, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (11): ReLU(inplace=True)
+  (12): Conv2d(256, 256, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (13): ReLU(inplace=True)
+  (14): Conv2d(256, 256, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (15): ReLU(inplace=True)
+  (16): Conv2d(256, 256, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (17): ReLU(inplace=True)
+  (18): MaxPool2d(kernel\_size=2, stride=2, padding=0, dilation=1,
+ceil\_mode=False)
+  (19): Conv2d(256, 512, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (20): ReLU(inplace=True)
+  (21): Conv2d(512, 512, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (22): ReLU(inplace=True)
+  (23): Conv2d(512, 512, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (24): ReLU(inplace=True)
+  (25): Conv2d(512, 512, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (26): ReLU(inplace=True)
+  (27): MaxPool2d(kernel\_size=2, stride=2, padding=0, dilation=1,
+ceil\_mode=False)
+  (28): Conv2d(512, 512, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (29): ReLU(inplace=True)
+  (30): Conv2d(512, 512, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (31): ReLU(inplace=True)
+  (32): Conv2d(512, 512, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (33): ReLU(inplace=True)
+  (34): Conv2d(512, 512, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (35): ReLU(inplace=True)
+  (36): MaxPool2d(kernel\_size=2, stride=2, padding=0, dilation=1,
+ceil\_mode=False)
+)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{load\PYZus{}image}\PY{p}{(}\PY{n}{img\PYZus{}path}\PY{p}{,} \PY{n}{max\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{400}\PY{p}{,} \PY{n}{shape}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+    
+    \PY{n}{image} \PY{o}{=} \PY{n}{Image}\PY{o}{.}\PY{n}{open}\PY{p}{(}\PY{n}{img\PYZus{}path}\PY{p}{)}\PY{o}{.}\PY{n}{convert}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{RGB}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{k}{if} \PY{n+nb}{max}\PY{p}{(}\PY{n}{image}\PY{o}{.}\PY{n}{size}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{n}{max\PYZus{}size}\PY{p}{:}
+        \PY{n}{size} \PY{o}{=} \PY{n}{max\PYZus{}size}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n}{size} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{image}\PY{o}{.}\PY{n}{size}\PY{p}{)}
+    
+    \PY{k}{if} \PY{n}{shape} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:}
+        \PY{n}{size} \PY{o}{=} \PY{n}{shape}
+ 
+    \PY{n}{in\PYZus{}transform} \PY{o}{=} \PY{n}{transforms}\PY{o}{.}\PY{n}{Compose}\PY{p}{(}\PY{p}{[}
+                        \PY{n}{transforms}\PY{o}{.}\PY{n}{Resize}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{,}
+                        \PY{n}{transforms}\PY{o}{.}\PY{n}{ToTensor}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+                        \PY{n}{transforms}\PY{o}{.}\PY{n}{Normalize}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{,} 
+                                             \PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+
+    \PY{n}{image} \PY{o}{=} \PY{n}{in\PYZus{}transform}\PY{p}{(}\PY{n}{image}\PY{p}{)}\PY{o}{.}\PY{n}{unsqueeze}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+    
+    \PY{k}{return} \PY{n}{image}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{content} \PY{o}{=} \PY{n}{load\PYZus{}image}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./data/styleTransfer\PYZhy{}1/Images/City.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+\PY{n}{style} \PY{o}{=} \PY{n}{load\PYZus{}image}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./data/styleTransfer\PYZhy{}1/Images/StarryNight.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{shape}\PY{o}{=}\PY{n}{content}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{:}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{im\PYZus{}convert}\PY{p}{(}\PY{n}{tensor}\PY{p}{)}\PY{p}{:}
+    \PY{n}{image} \PY{o}{=} \PY{n}{tensor}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cpu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{clone}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{detach}\PY{p}{(}\PY{p}{)}
+    \PY{n}{image} \PY{o}{=} \PY{n}{image}\PY{o}{.}\PY{n}{numpy}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{squeeze}\PY{p}{(}\PY{p}{)}
+    \PY{n}{image} \PY{o}{=} \PY{n}{image}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+    \PY{n}{image} \PY{o}{=} \PY{n}{image} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{)}
+    \PY{n}{image} \PY{o}{=} \PY{n}{image}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{image}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{n}{ax2}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{im\PYZus{}convert}\PY{p}{(}\PY{n}{content}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{im\PYZus{}convert}\PY{p}{(}\PY{n}{style}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(-0.5, 599.5, 399.5, -0.5)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Style Transfer_files/Style Transfer_7_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{get\PYZus{}features}\PY{p}{(}\PY{n}{image}\PY{p}{,} \PY{n}{model}\PY{p}{)}\PY{p}{:}
+   
+    \PY{n}{layers} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{0}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conv1\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+              \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conv2\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+              \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{10}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conv3\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+              \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{19}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conv4\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+              \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{21}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conv4\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}  \PY{c+c1}{\PYZsh{} Content Extraction}
+              \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{28}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conv5\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+        
+    \PY{n}{features} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+
+    \PY{k}{for} \PY{n}{name}\PY{p}{,} \PY{n}{layer} \PY{o+ow}{in} \PY{n}{model}\PY{o}{.}\PY{n}{\PYZus{}modules}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{n}{image} \PY{o}{=} \PY{n}{layer}\PY{p}{(}\PY{n}{image}\PY{p}{)}
+        \PY{k}{if} \PY{n}{name} \PY{o+ow}{in} \PY{n}{layers}\PY{p}{:}
+            \PY{n}{features}\PY{p}{[}\PY{n}{layers}\PY{p}{[}\PY{n}{name}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{image}
+            
+    \PY{k}{return} \PY{n}{features}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{content\PYZus{}features} \PY{o}{=} \PY{n}{get\PYZus{}features}\PY{p}{(}\PY{n}{content}\PY{p}{,} \PY{n}{vgg}\PY{p}{)}
+\PY{n}{style\PYZus{}features} \PY{o}{=} \PY{n}{get\PYZus{}features}\PY{p}{(}\PY{n}{style}\PY{p}{,} \PY{n}{vgg}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{gram\PYZus{}matrix}\PY{p}{(}\PY{n}{tensor}\PY{p}{)}\PY{p}{:}
+  \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{d}\PY{p}{,} \PY{n}{h}\PY{p}{,} \PY{n}{w} \PY{o}{=} \PY{n}{tensor}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}
+  \PY{n}{tensor} \PY{o}{=} \PY{n}{tensor}\PY{o}{.}\PY{n}{view}\PY{p}{(}\PY{n}{d}\PY{p}{,} \PY{n}{h} \PY{o}{*} \PY{n}{w}\PY{p}{)}
+  \PY{n}{gram} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{mm}\PY{p}{(}\PY{n}{tensor}\PY{p}{,} \PY{n}{tensor}\PY{o}{.}\PY{n}{t}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{k}{return} \PY{n}{gram}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{style\PYZus{}grams} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{layer}\PY{p}{:} \PY{n}{gram\PYZus{}matrix}\PY{p}{(}\PY{n}{style\PYZus{}features}\PY{p}{[}\PY{n}{layer}\PY{p}{]}\PY{p}{)} \PY{k}{for} \PY{n}{layer} \PY{o+ow}{in} \PY{n}{style\PYZus{}features}\PY{p}{\PYZcb{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{style\PYZus{}weights} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conv1\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+m+mf}{1.}\PY{p}{,}
+                 \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conv2\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+m+mf}{0.75}\PY{p}{,}
+                 \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conv3\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+m+mf}{0.2}\PY{p}{,}
+                 \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conv4\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+m+mf}{0.2}\PY{p}{,}
+                 \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conv5\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+m+mf}{0.2}\PY{p}{\PYZcb{}}
+
+\PY{n}{content\PYZus{}weight} \PY{o}{=} \PY{l+m+mi}{1}  \PY{c+c1}{\PYZsh{} alpha}
+\PY{n}{style\PYZus{}weight} \PY{o}{=} \PY{l+m+mf}{1e6}  \PY{c+c1}{\PYZsh{} beta}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{target} \PY{o}{=} \PY{n}{content}\PY{o}{.}\PY{n}{clone}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{requires\PYZus{}grad\PYZus{}}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{show\PYZus{}every} \PY{o}{=} \PY{l+m+mi}{300}
+\PY{n}{optimizer} \PY{o}{=} \PY{n}{optim}\PY{o}{.}\PY{n}{Adam}\PY{p}{(}\PY{p}{[}\PY{n}{target}\PY{p}{]}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{l+m+mf}{0.003}\PY{p}{)}
+\PY{n}{steps} \PY{o}{=} \PY{l+m+mi}{2100}
+
+\PY{n}{height}\PY{p}{,} \PY{n}{width}\PY{p}{,} \PY{n}{channels} \PY{o}{=} \PY{n}{im\PYZus{}convert}\PY{p}{(}\PY{n}{target}\PY{p}{)}\PY{o}{.}\PY{n}{shape}
+\PY{n}{image\PYZus{}array} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n}{shape}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{300}\PY{p}{,} \PY{n}{height}\PY{p}{,} \PY{n}{width}\PY{p}{,} \PY{n}{channels}\PY{p}{)}\PY{p}{)}
+\PY{n}{capture\PYZus{}frame} \PY{o}{=} \PY{n}{steps}\PY{o}{/}\PY{l+m+mi}{300}
+\PY{n}{counter} \PY{o}{=} \PY{l+m+mi}{0}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{for} \PY{n}{ii} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{steps}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+  \PY{n}{target\PYZus{}features} \PY{o}{=} \PY{n}{get\PYZus{}features}\PY{p}{(}\PY{n}{target}\PY{p}{,} \PY{n}{vgg}\PY{p}{)}
+  \PY{n}{content\PYZus{}loss} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{(}\PY{n}{target\PYZus{}features}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conv4\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{content\PYZus{}features}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conv4\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+  \PY{n}{style\PYZus{}loss} \PY{o}{=} \PY{l+m+mi}{0}
+
+  \PY{k}{for} \PY{n}{layer} \PY{o+ow}{in} \PY{n}{style\PYZus{}weights}\PY{p}{:}
+    \PY{n}{target\PYZus{}feature} \PY{o}{=} \PY{n}{target\PYZus{}features}\PY{p}{[}\PY{n}{layer}\PY{p}{]}
+    \PY{n}{target\PYZus{}gram} \PY{o}{=} \PY{n}{gram\PYZus{}matrix}\PY{p}{(}\PY{n}{target\PYZus{}feature}\PY{p}{)}
+    \PY{n}{style\PYZus{}gram} \PY{o}{=} \PY{n}{style\PYZus{}grams}\PY{p}{[}\PY{n}{layer}\PY{p}{]}
+    \PY{n}{layer\PYZus{}style\PYZus{}loss} \PY{o}{=} \PY{n}{style\PYZus{}weights}\PY{p}{[}\PY{n}{layer}\PY{p}{]} \PY{o}{*} \PY{n}{torch}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{(}\PY{n}{target\PYZus{}gram} \PY{o}{\PYZhy{}} \PY{n}{style\PYZus{}gram}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+    \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{d}\PY{p}{,} \PY{n}{h}\PY{p}{,} \PY{n}{w} \PY{o}{=} \PY{n}{target\PYZus{}feature}\PY{o}{.}\PY{n}{shape}
+    \PY{n}{style\PYZus{}loss} \PY{o}{+}\PY{o}{=} \PY{n}{layer\PYZus{}style\PYZus{}loss} \PY{o}{/} \PY{p}{(}\PY{n}{d}\PY{o}{*}\PY{n}{h}\PY{o}{*}\PY{n}{w}\PY{p}{)}
+
+  \PY{n}{total\PYZus{}loss} \PY{o}{=} \PY{n}{content\PYZus{}weight}\PY{o}{*}\PY{n}{content\PYZus{}loss} \PY{o}{+} \PY{n}{style\PYZus{}weight}\PY{o}{*}\PY{n}{style\PYZus{}loss}
+
+  \PY{n}{optimizer}\PY{o}{.}\PY{n}{zero\PYZus{}grad}\PY{p}{(}\PY{p}{)}
+  \PY{n}{total\PYZus{}loss}\PY{o}{.}\PY{n}{backward}\PY{p}{(}\PY{p}{)}
+  \PY{n}{optimizer}\PY{o}{.}\PY{n}{step}\PY{p}{(}\PY{p}{)}
+
+  \PY{k}{if} \PY{n}{ii} \PY{o}{\PYZpc{}} \PY{n}{show\PYZus{}every} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Total loss: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{total\PYZus{}loss}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iteration: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ii}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{im\PYZus{}convert}\PY{p}{(}\PY{n}{target}\PY{p}{)}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{off}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+  
+  \PY{k}{if} \PY{n}{ii} \PY{o}{\PYZpc{}} \PY{n}{capture\PYZus{}frame} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+    \PY{n}{image\PYZus{}array}\PY{p}{[}\PY{n}{counter}\PY{p}{]} \PY{o}{=} \PY{n}{im\PYZus{}convert}\PY{p}{(}\PY{n}{target}\PY{p}{)}
+    \PY{n}{counter} \PY{o}{=} \PY{n}{counter} \PY{o}{+} \PY{l+m+mi}{1}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Total loss:  932833.5
+Iteration:  300
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Style Transfer_files/Style Transfer_15_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Total loss:  651102.25
+Iteration:  600
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Style Transfer_files/Style Transfer_15_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Total loss:  504280.59375
+Iteration:  900
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Style Transfer_files/Style Transfer_15_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Total loss:  395064.53125
+Iteration:  1200
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Style Transfer_files/Style Transfer_15_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Total loss:  309852.34375
+Iteration:  1500
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Style Transfer_files/Style Transfer_15_9.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Total loss:  242368.46875
+Iteration:  1800
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Style Transfer_files/Style Transfer_15_11.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{n}{ax2}\PY{p}{,} \PY{n}{ax3}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{im\PYZus{}convert}\PY{p}{(}\PY{n}{content}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{im\PYZus{}convert}\PY{p}{(}\PY{n}{style}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{im\PYZus{}convert}\PY{p}{(}\PY{n}{target}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax3}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(-0.5, 599.5, 399.5, -0.5)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Style Transfer_files/Style Transfer_16_1.png}
+    \end{center}

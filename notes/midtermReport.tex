@@ -7,7 +7,7 @@
 \graphicspath{{./images/}}
 
 \usepackage{listings}
-\newcommand*\lstinputpath[1]{\lstset{inputpath=#1}}
+\newcommand\lstinputpath[1]{\lstset{inputpath=#1}}
 \lstinputpath{codes}
 
 \usepackage{xcolor}
@@ -61,12 +61,13 @@
 
 \begin{titlepage}
 \maketitle
+\tableofcontents{}
 \end{titlepage}
 
 Machine Learning is undeniably one of the most influential and powerful technologies in today’s world. It is a tool for turning information into knowledge. In the past 50 years, there has been an explosion of data. This mass of data is useless unless we analyse it and find the patterns hidden within. Machine learning techniques are used to automatically find the valuable underlying patterns within complex data that we would otherwise struggle to discover. The hidden patterns and knowledge about a problem can be used to predict future events and perform all kinds of complex decision making.\\\\
 There are multiple forms of Machine Learning; supervised, unsupervised , semi-supervised and reinforcement learning. Each form of Machine Learning has differing approaches, but they all follow the same underlying process and theory. I'll cover supervised and unsupervised learning for my report.
 
-\section*{Supervised and Unsupervised Learning}
+\section{Supervised and Unsupervised Learning}
   The most basic thing to remember is that we already know what our correct output should look like in Supervised Learning.
   But, we have little or no idea about what our results should look like.\\
 
@@ -85,7 +86,7 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
 \chapter{Linear Regression}
   Regression being a part of Supervised Learning is used for estimating data with real-valued output.  
 
-  \subsection*{Cost Function}
+  \subsection{Cost Function}
     This function measures the performance of a Machine Learning model for given data.
 
     \textbf{Hypothesis}: $ h_ \theta(x) = \theta_0 + \theta_1x $
@@ -99,7 +100,7 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
 
     \textbf{Goal:} Minimize cost function with $ \theta_0, \theta_1 $ as parameters.
 
-  \subsection*{Gradient Descent}
+  \subsection{Gradient Descent}
 
     \textbf{Basic idea:}
     \begin{itemize}
@@ -119,7 +120,7 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
     If $\alpha$ is too small, the descent can be slow and if too large, descent may fail to converge or even diverge.
     Gradient descent can converge to a local minimum, even with a fixed learning rate $\alpha$. As we approach local minimum, gradient descent will automatically take smaller steps. So, no need to decrease $\alpha$ over time. 
 
-  \subsection*{Gradient Descent for linear regression}
+  \subsection{Gradient Descent for linear regression}
     Combining gradient descent algorithm with linear regression model, we get:
 
     \begin{equation} \label {eq:3}
@@ -136,10 +137,10 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
     For eq. "m" batches in equation \ref{eq:1}.
 
 
-\section*{Multivariate Linear Regression}
+\section{Multivariate Linear Regression}
   Linear regression involving more than one variable. For eq., Predicting the price of a house based on parameters "Plot Area", "No. of Floors", "Connectivity with markets", etc.
 
-  \subsection*{Multiple Features}
+  \subsection{Multiple Features}
     The multivariable form of the hypothesis is as follows:
     \begin{equation} \label {eq:5}
         h_\theta(x) = \theta_0 + \theta_1x_1 + \theta_2x_2 + \theta_ 3x_3 + ... + \theta_{n}x_n.    
@@ -151,7 +152,7 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
     where, $ \theta^T $ is a 1xn matrix consisting of $ \theta_0, \theta_1, \theta_2 ... \theta_n $.
 
 
-  \subsection*{Gradient Descent for Multiple Variables}
+  \subsection{Gradient Descent for Multiple Variables}
     Gradient descent formula for Multiple variables will be similar to that of a single variable.
 
     \begin{equation} \label {eq: GD for multiple}
@@ -160,18 +161,18 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
 
     Repeating this equation until convergence will give the minima. \footnote[1]{$x_0 = 1$ in equation \ref{eq: GD for multiple}}
 
-  \subsubsection*{Feature Scaling}
+  \subsubsection{Feature Scaling}
     Feature Scaling is used to reduce the number of iterations in Gradient Descent.The basic idea of feature scaling is to bring all the features on the same scale. (in general we try to approximate every feature in the range $ -1 < x_i < 1 $)
     \\ \\ Reducing the number of iteration doesn't mean making computation of each step easier. And also it does not affect computational efficiency of Normal Equation.
 
-  \subsubsection*{Mean Normalisation}
+  \subsubsection{Mean Normalisation}
     Mean Normalisation makes features to have approximately zero mean.
 
-  \subsubsection*{Learning Rate}
+  \subsubsection{Learning Rate}
     If $\alpha$ is too small: slow convergence.\\ \\
     if $\alpha$ is too large: $J(\theta)$ may not decrease on every iteration, or may not converge.
 
-  \subsubsection*{Polynomial Regression}
+  \subsubsection{Polynomial Regression}
     Selecting proper polynomial for fitting data is very important.
 
     \begin{figure}[h]
@@ -185,7 +186,7 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
     \textbf {Green:} Cubic function
 \\ \\
 
-\section*{Normal equation}
+\section{Normal equation}
   Normal Equation is a method to solve for $\theta_T$ analytically, by creating a $m\times(n+1)$ matrix $X$ and another $m\times1$ matrix $Y$.\footnote[2]{Every element of first column of matrix $X$ is 1 and other are the feature's coefficient}
 
   Mathematically $\theta$ is given as:
@@ -205,19 +206,19 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
 
   \vspace{5mm}
 
-  \subsubsection*{Reasons for non-invertiblity of $X^T X$}
+  \subsubsection{Reasons for non-invertiblity of $X^T X$}
     \begin{itemize}
         \item Redundant features (linear dependence) \footnote[3]{Eg. Using both $m^2 \  \& \  (feet)^2$ features}
         \item Too many features (m $<=$ n) 
     \end{itemize}
 
-\section*{Classification and Represention}
+\section{Classification and Represention}
 
 
-  \subsection*{Classification}
+  \subsection{Classification}
     The classification problem is just like the regression problem, except that the values we now want to predict take on only a small number of discrete values. For now, we'll discuss the binary classification problem.
 
-  \subsection*{Hypothesis Representation}
+  \subsection{Hypothesis Representation}
     We may use out old regression algorithm by classifying data on the basis of a threshold. But it will have very poor performance.\\ 
     \\We will introduce "Sigmoid Function", also called the "Logistic Function":
     \begin{equation}
@@ -236,16 +237,16 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
       \caption{Sigmoid Funtion \ref{eq:sigmoid}}
     \end{figure}
 
-  \subsection*{Decision Boundary}
+  \subsection{Decision Boundary}
     The decision boundary is the line that separates the area where y=0 and where y=1.\\
     It is similar to the decision boundary for linear regression, the only difference is distribution of values (linear and sigmoid)
 
-  \subsection*{Worked-out Example}
+  \subsection{Worked-out Example}
 	\lstinputlisting[language=Octave, caption=Octave Implementation for Linear Regression Algorithms]{linearRegression.m}
 
 \chapter{Logistic Regression}
 
-  \subsection*{Cost Function}
+  \subsection{Cost Function}
     Cost funtion for logistic regression looks like:
 
     \begin{equation}
@@ -262,7 +263,7 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
       \caption{Cost Funtion}
     \end{figure}
 
-    \subsubsection*{Siplified Cost Funtion}
+    \subsubsection{Siplified Cost Funtion}
     This cost funtion can be compressed into a single funtion:
     \begin{equation}
       Cost(h_\theta(x),y) = -y\log{(h_\theta{(x)})} -(1-y)\log{(1-h_\theta{(x)})}
@@ -274,8 +275,8 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
     Vectorised implementation for Gradient Descent: \\ \\
     $\theta := \theta - \frac{\alpha}{m}X^T(g(X\theta)-y)$
 
-\section*{Multiclass Classification}
-  \subsection*{One-vs-all}
+\section{Multiclass Classification}
+  \subsection{One-vs-all}
     This approach is when data has more than two categories.We divide our problem into n\footnote[1]{n = no of categories in dataset} binary classification problems, in each one, we predict the probability considering one of the category to be $+$ve and all other to be $-$ve. Repeating this for all other categories will finally give us all the decision boundaries.
     \begin{figure}[h]
       \centering
@@ -283,7 +284,7 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
       \caption{One vs all classifiaction method}
     \end{figure}   
 
-  \subsection*{Worked-out Example}
+  \subsection{Worked-out Example}
 	\lstinputlisting[language=Octave, caption=Octave Implementation for Logistic Regression Algorithms]{logisticRegression.m}
 
 
@@ -293,11 +294,17 @@ There are multiple forms of Machine Learning; supervised, unsupervised , semi-su
 \chapter{Naive Bayes}
 \input{sections/naiveBayes}
 
-
 \chapter{k-Nearest Neighbours}
 \input{sections/KNN}
 
-\chapter{Revised Plan of Action}
-\input{sections/poa-midterm}
+\chapter{Neural Networks}
+\input{sections/neuralNets}
+
+\chapter{Improving Neural Networks}
+\input{sections/improvingNN}
+
+\chapter{Unsupervised Learning}
+\input{sections/unsupervisedLearning}
+
 
 \end{document}

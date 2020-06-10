@@ -7,17 +7,17 @@ What to try next for improving our neural networks?
   \item Increasing or decreasing $\lambda$
 \end{itemize}
 
-\section{Evaulating a Hypothesis}
-A hypothesis may have a low error for training examples but still be inaccurate (because of overfitting). Thus, to evaulate a hypothesis, given a dataset of training examples, we can split up the data into two sets: a training set and a test set. Typically, the training set consists of $70\%$ of your data and the test set is the remaining $30\% $.
+\section{Evaluating a Hypothesis}
+A hypothesis may have a low error for training examples but still, be inaccurate (because of overfitting). Thus, to evaluate a hypothesis, given a dataset of training examples, we can split up the data into two sets: a training set and a test set. Typically, the training set consists of $70\%$ of your data and the test set is the remaining $30\% $.
 
 \begin{figure}[h]
-  \includegraphics[scale=0.5]{testerror.png}
+  \includegraphics[scale=1]{testerror.png}
 \end{figure}
 
 \subsection{Model Selection}
-  Just because a learning algorithm fits a training set well, that does not mean it is a good hypothesis. It could over fit and as a result your predictions on the test set would be poor.
+  Just because a learning algorithm fits a training set well, that does not mean it is a good hypothesis. It could overfit and as a result, your predictions on the test set would be poor.
   \\\\
-  Given many models with different polynomial degrees, we can use a systematic approach to identify the 'best' function. In order to choose the model of your hypothesis, you can test each degree of polynomial and look at the error result.
+  Given many models with different polynomial degrees, we can use a systematic approach to identify the 'best' function. To choose the model of your hypothesis, you can test each degree of the polynomial and look at the error result.
   \\\\
   We usually break down out dataset into three sets:
   \begin{itemize}
@@ -33,6 +33,8 @@ A hypothesis may have a low error for training examples but still be inaccurate 
     \item Find the polynomial degree $d$ with the least error usign the cross validation set.
     \item Estimate the generalization error using the test set with $J_{test}(\Theta^{(d)})$ (d = $\theta$ from polynomial with lower error)
   \end{enumerate}
+
+  % \lstinputlisting[language=octave, caption=Octave implementation for sections of Neural Networks]{4.NN Learning.m}
 
 \section{Bias vs. Variance}
   \textbf{High bias (underfitting)}: both $J_train(\theta)$ and $J_{CV}(\theta)$ will be high and also similar.
@@ -52,7 +54,7 @@ A hypothesis may have a low error for training examples but still be inaccurate 
       \caption{Fitting of data with $\lambda$}
     \end{figure}
 
-    In the figure above, we see that as $\lambda$ increases, our fit becomes more rigid. On the other hand, as $\lambda$ approaches 0, we tend to over overfit the data. So how do we choose our parameter $\lambda$ to get it 'just right' ?
+    In the figure above, we see that as $\lambda$ increases, our fit becomes more rigid. On the other hand, as $\lambda$ approaches 0, we tend to over overfit the data. So how do we choose our parameter $\lambda$ to get it 'just right'?
 
     \begin{enumerate}
       \item Create a list of lambdas.
@@ -67,4 +69,5 @@ A hypothesis may have a low error for training examples but still be inaccurate 
       \includegraphics[scale=0.7]{learnbias.png}
       \includegraphics[scale=0.75]{learnvariance.png}
     \end{figure}    
-  
+
+  % \lstinputlisting[language=Octave]{5.bias-variance.m}  

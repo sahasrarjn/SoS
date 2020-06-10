@@ -1,6 +1,6 @@
-K-Nearest Neighbours is one of the most basic yet essential algorithms in Machine Learning. It has intense application in pattern recognition, data mining and intrusion detection.
+K-Nearest Neighbours is one of the most basic yet essential algorithms in Machine Learning. It has an intense application in pattern recognition, data mining, and intrusion detection.
 
-\subsection*{The Algorithm}
+\subsection{The Algorithm}
     \begin{enumerate}
         \item Load the data
         \item Initialize K
@@ -15,7 +15,7 @@ K-Nearest Neighbours is one of the most basic yet essential algorithms in Machin
         \item If regression, return the mean else if classification, return the mode of the K labels
     \end{enumerate}
 
-\subsection*{Chosing the right value for K}
+\subsection{Chosing the right value for K}
     To select the K that’s right for your data, we run the KNN algorithm several times with different values of K and choose the K that reduces the number of errors we encounter while maintaining the algorithm’s ability to accurately make predictions when it’s given data it hasn’t seen before.\\ \\
     Here are some things to keep in mind:
     \begin{enumerate}
@@ -24,24 +24,24 @@ K-Nearest Neighbours is one of the most basic yet essential algorithms in Machin
         \item In cases where we are taking majority vote, we usually make "K" an odd number to have a tiebreaker. 
     \end{enumerate}
 
-    \subsubsection*{Advantages}
+    \subsubsection{Advantages}
     \begin{itemize}
         \item Simple and easy to implement.
         \item No need to build a model, tune several parameters, or make additional assumptions.
         \item Versatile, can be used for classification, regresion and search as well.
     \end{itemize}
 
-    \subsubsection*{Disadvantages}
+    \subsubsection{Disadvantages}
     \begin{itemize}
         \item Slow with increase in number of examples and/or predictors.
     \end{itemize}
     
-\subsection*{Applications}
+\subsection{Applications}
     kNN’s main disadvantage of becoming significantly slower as the volume of data increases makes it an impractical choice in environments where predictions need to be made rapidly. Moreover, there are faster algorithms that can produce more accurate classification and regression results.\\ \\
     However, provided you have sufficient computing resources to speedily handle the data you are using to make predictions, KNN can still be useful in solving problems that have solutions that depend on identifying similar objects. An example of this is using the KNN algorithm in recommender systems, an application of KNN-search.
 
-\subsection*{Worked-out Implementation}
-\lstinputlisting[language=Python, caption=Python Implementation for K-Nearest Neighbours Algorithm]{kNN-implementation.py}
+\subsection{Worked-out Implementation}
+% \lstinputlisting[language=Python, caption=Python Implementation for K-Nearest Neighbours Algorithm]{kNN-implementation.py}
 
 \begin{figure}[h]
     \centering

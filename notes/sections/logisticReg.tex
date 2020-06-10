@@ -1,10 +1,10 @@
-\section{Classification and Represention}
+\section{Classification and Representation}
 
   \subsection{Classification}
-    The classification problem is just like the regression problem, except that the values we now want to predict take on onle a small number of discrete values. For now, we'll discuss binary classification problem.
+    The classification problem is just like the regression problem, except that the values we now want to predict take on only a small number of discrete values. For now, we'll discuss a binary classification problem.
 
   \subsection{Hypothesis Representation}
-    We may use out old regression algorithm by classifying data on the basis of a threshold. But it will have very poor performance.\\ 
+    We may use our old regression algorithm by classifying data on the basis of a threshold. But it will have very poor performance.\\ 
     \\We will introduce "Sigmoid Function", also called the "Logistic Function":
     \begin{equation}
       h_\theta(x) = g(\theta^{T}x)
@@ -18,13 +18,13 @@
     This is how the Sigmoid Function looks like:
     \begin{figure}[h]
       \centering
-      \includegraphics[scale = 0.15]{sigmoid.png}
+      \includegraphics[scale = 0.6]{sigmoid.png}
       \caption{Sigmoid Funtion \ref{eq:sigmoid}}
     \end{figure}
 
   \subsection{Decesion Boundary}
-    The decesion boundary is the line that separates the area where y=0 and where y=1.\\
-    It is similar to the decesion boundary for linear regression, the only difference is distibution of values (linear and sigmoid)
+    The decision boundary is the line that separates the area where y=0 and where y=1.\\
+    It is similar to the decision boundary for linear regression, the only difference is the distribution of values (linear and sigmoid)
 
 \section{Logistic Regression Model}
 
@@ -41,7 +41,7 @@
 
     \begin{figure}[h]
       \centering
-      \includegraphics[scale = 0.25]{costlog.png}
+      \includegraphics[scale = 0.6]{costlog.png}
       \caption{Cost Funtion}
     \end{figure}
 
@@ -62,7 +62,7 @@
     This approach is when data has more than two categories.We divide our problem into n\footnote[1]{n = no of categories in dataset} binary classification problems, in each one, we predict the probability considering one of the category to be $+$ve and all other to be $-$ve. Repeating this for all other categories will finally give us all the decesion boundaries.
     \begin{figure}[h]
       \centering
-      \includegraphics[scale = 0.3]{oneall.png}
+      \includegraphics[scale = 0.5]{oneall.png}
       \caption{One vs all classifiaction method}
     \end{figure}   
 
@@ -100,20 +100,22 @@
   \subsection{Regularized Linear Regression}
     \begin{figure}[h]
       \centering
-      \includegraphics[scale=0.7]{gradregularize.png}
+      \includegraphics[scale=1]{gradregularize.png}
     \end{figure}
 
 
-    The term $\frac{\lambda}{m}\theta_{j}$ performs our regularization. With some manipulation our update rule can also be represented as:\\
+    The term $\frac{\lambda}{m}\theta_{j}$ performs our regularization. With some manipulation, our update rule can also be represented as \\
 
     $ \theta_j := \theta_j(1 - \alpha\frac{\lambda}{m}) - \alpha\frac{1}{m}\sum_{i=1}^m(h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)} $\\
 
     The first term in the above equation, $\alpha\frac{\lambda}{m}$ will always be less than 1. Intuitively you can see it as reducing the value of $j\theta_j$ by some amount on every update.
 
     \subsubsection{Normal Eequation}
-      This will be the non-iterative approach for regularazation.\\\\
+      This will be the non-iterative approach for regularisation.\\\\
       To add in regularization, we'll just add another term:
       \begin{equation}
         \theta = X^T X + \lambda . L^{-1} X^T y
       \end{equation}
       where, L is $(n+1)\times(n+1)$ matrix with 0 at the top lest, 1`s down the diagonal and all other element '0'.
+    % \\ \\
+    % \lstinputlisting[language=Octave, caption=Octave Implementation for Logistic Regression Algorithms]{logisticRegression.m}

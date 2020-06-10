@@ -1,0 +1,12 @@
+notes/CNN_files
+notes/Deep_NN_files
+notes/ImageRecognition_files
+notes/Linear Regression_files
+notes/Perceptron_files
+notes/Style Transfer_files
+notes/Titanic Survival_files
+notes/Transfer Learning - AlexNet_files
+notes/*out
+notes/*aux
+notes/*log
+codes/.ipynb_checkpoints

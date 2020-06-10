@@ -1,0 +1,417 @@
+    AlexNet is the name of a convolutional neural network (CNN), designed by Alex Krizhevsky, and published with Ilya Sutskever and Krizhevsky's doctoral advisor Geoffrey Hinton.
+
+    AlexNet competed in the ImageNet Large Scale Visual Recognition Challenge on September 30, 2012. The network achieved a top-5 error of 15.3\%, more than 10.8 percentage points lower than that of the runner up. The original paper's primary result was that the depth of the model was essential for its high performance, which was computationally expensive, but made feasible due to the utilization of graphics processing units (GPUs) during training.\\
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics{Transfer Learning - AlexNet_files/net.png}
+    \end{figure}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{torch}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{torch}\PY{n+nn}{.}\PY{n+nn}{nn}\PY{n+nn}{.}\PY{n+nn}{functional} \PY{k}{as} \PY{n+nn}{F}
+\PY{k+kn}{from} \PY{n+nn}{torch} \PY{k+kn}{import} \PY{n}{nn}
+\PY{k+kn}{from} \PY{n+nn}{torchvision} \PY{k+kn}{import} \PY{n}{datasets}\PY{p}{,} \PY{n}{transforms}\PY{p}{,} \PY{n}{models}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{device} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{device}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cuda:0}\PY{l+s+s2}{\PYZdq{}} \PY{k}{if} \PY{n}{torch}\PY{o}{.}\PY{n}{cuda}\PY{o}{.}\PY{n}{is\PYZus{}available}\PY{p}{(}\PY{p}{)} \PY{k}{else} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cpu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{transform\PYZus{}train} \PY{o}{=} \PY{n}{transforms}\PY{o}{.}\PY{n}{Compose}\PY{p}{(}\PY{p}{[}\PY{n}{transforms}\PY{o}{.}\PY{n}{Resize}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{224}\PY{p}{,}\PY{l+m+mi}{224}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+                                      \PY{n}{transforms}\PY{o}{.}\PY{n}{RandomHorizontalFlip}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+                                      \PY{n}{transforms}\PY{o}{.}\PY{n}{RandomRotation}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,}
+                                      \PY{n}{transforms}\PY{o}{.}\PY{n}{RandomAffine}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{shear}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{scale}\PY{o}{=}\PY{p}{(}\PY{l+m+mf}{0.8}\PY{p}{,}\PY{l+m+mf}{1.2}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+                                      \PY{n}{transforms}\PY{o}{.}\PY{n}{ColorJitter}\PY{p}{(}\PY{n}{brightness}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{contrast}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{,} \PY{n}{saturation}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{)}\PY{p}{,}
+                                      \PY{n}{transforms}\PY{o}{.}\PY{n}{ToTensor}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+                                      \PY{n}{transforms}\PY{o}{.}\PY{n}{Normalize}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{)}
+                               \PY{p}{]}\PY{p}{)}
+
+
+\PY{n}{transform} \PY{o}{=} \PY{n}{transforms}\PY{o}{.}\PY{n}{Compose}\PY{p}{(}\PY{p}{[}\PY{n}{transforms}\PY{o}{.}\PY{n}{Resize}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{224}\PY{p}{,}\PY{l+m+mi}{224}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+                               \PY{n}{transforms}\PY{o}{.}\PY{n}{ToTensor}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+                               \PY{n}{transforms}\PY{o}{.}\PY{n}{Normalize}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{)}
+                               \PY{p}{]}\PY{p}{)}
+\PY{n}{training\PYZus{}dataset} \PY{o}{=} \PY{n}{datasets}\PY{o}{.}\PY{n}{ImageFolder}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data/ants\PYZus{}and\PYZus{}bees/train}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{transform}\PY{o}{=}\PY{n}{transform\PYZus{}train}\PY{p}{)}
+\PY{n}{validation\PYZus{}dataset} \PY{o}{=} \PY{n}{datasets}\PY{o}{.}\PY{n}{ImageFolder}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data/ants\PYZus{}and\PYZus{}bees/val}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{transform}\PY{o}{=}\PY{n}{transform}\PY{p}{)}
+
+\PY{n}{training\PYZus{}loader} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{utils}\PY{o}{.}\PY{n}{data}\PY{o}{.}\PY{n}{DataLoader}\PY{p}{(}\PY{n}{training\PYZus{}dataset}\PY{p}{,} \PY{n}{batch\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{shuffle}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{validation\PYZus{}loader} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{utils}\PY{o}{.}\PY{n}{data}\PY{o}{.}\PY{n}{DataLoader}\PY{p}{(}\PY{n}{validation\PYZus{}dataset}\PY{p}{,} \PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{100}\PY{p}{,} \PY{n}{shuffle}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{im\PYZus{}convert}\PY{p}{(}\PY{n}{tensor}\PY{p}{)}\PY{p}{:}
+  \PY{n}{image} \PY{o}{=} \PY{n}{tensor}\PY{o}{.}\PY{n}{clone}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{detach}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{numpy}\PY{p}{(}\PY{p}{)}
+  \PY{n}{image} \PY{o}{=} \PY{n}{image}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+  \PY{n}{image} \PY{o}{=} \PY{n}{image} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{)}
+  \PY{n}{image} \PY{o}{=} \PY{n}{image}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+  \PY{k}{return} \PY{n}{image}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{classes} \PY{o}{=} \PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ant}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bee}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dataiter} \PY{o}{=} \PY{n+nb}{iter}\PY{p}{(}\PY{n}{training\PYZus{}loader}\PY{p}{)}
+\PY{n}{images}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{dataiter}\PY{o}{.}\PY{n}{next}\PY{p}{(}\PY{p}{)}
+\PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{25}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{idx} \PY{o+ow}{in} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{:}
+  \PY{n}{ax} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{,} \PY{n}{idx}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{xticks}\PY{o}{=}\PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{n}{yticks}\PY{o}{=}\PY{p}{[}\PY{p}{]}\PY{p}{)}
+  \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{im\PYZus{}convert}\PY{p}{(}\PY{n}{images}\PY{p}{[}\PY{n}{idx}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+  \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{n}{classes}\PY{p}{[}\PY{n}{labels}\PY{p}{[}\PY{n}{idx}\PY{p}{]}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+  
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Transfer Learning - AlexNet_files/Transfer Learning - AlexNet_5_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model} \PY{o}{=} \PY{n}{models}\PY{o}{.}\PY{n}{alexnet}\PY{p}{(}\PY{n}{pretrained}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)} \PY{c+c1}{\PYZsh{} try vgg16 and reduce no. of epoch to 5}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{model}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+AlexNet(
+  (features): Sequential(
+    (0): Conv2d(3, 64, kernel\_size=(11, 11), stride=(4, 4), padding=(2, 2))
+    (1): ReLU(inplace=True)
+    (2): MaxPool2d(kernel\_size=3, stride=2, padding=0, dilation=1,
+ceil\_mode=False)
+    (3): Conv2d(64, 192, kernel\_size=(5, 5), stride=(1, 1), padding=(2, 2))
+    (4): ReLU(inplace=True)
+    (5): MaxPool2d(kernel\_size=3, stride=2, padding=0, dilation=1,
+ceil\_mode=False)
+    (6): Conv2d(192, 384, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (7): ReLU(inplace=True)
+    (8): Conv2d(384, 256, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (9): ReLU(inplace=True)
+    (10): Conv2d(256, 256, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (11): ReLU(inplace=True)
+    (12): MaxPool2d(kernel\_size=3, stride=2, padding=0, dilation=1,
+ceil\_mode=False)
+  )
+  (avgpool): AdaptiveAvgPool2d(output\_size=(6, 6))
+  (classifier): Sequential(
+    (0): Dropout(p=0.5, inplace=False)
+    (1): Linear(in\_features=9216, out\_features=4096, bias=True)
+    (2): ReLU(inplace=True)
+    (3): Dropout(p=0.5, inplace=False)
+    (4): Linear(in\_features=4096, out\_features=4096, bias=True)
+    (5): ReLU(inplace=True)
+    (6): Linear(in\_features=4096, out\_features=1000, bias=True)
+  )
+)
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{for} \PY{n}{param} \PY{o+ow}{in} \PY{n}{model}\PY{o}{.}\PY{n}{features}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{param}\PY{o}{.}\PY{n}{require\PYZus{}grad} \PY{o}{=} \PY{k+kc}{False}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{torch}\PY{n+nn}{.}\PY{n+nn}{nn} \PY{k}{as} \PY{n+nn}{nn}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{n\PYZus{}inputs} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{classifier}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{]}\PY{o}{.}\PY{n}{in\PYZus{}features}
+\PY{n}{last\PYZus{}layer} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{n}{n\PYZus{}inputs}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{classes}\PY{p}{)}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{classifier}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{]} \PY{o}{=} \PY{n}{last\PYZus{}layer}
+\PY{n}{model}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+AlexNet(
+  (features): Sequential(
+    (0): Conv2d(3, 64, kernel\_size=(11, 11), stride=(4, 4), padding=(2, 2))
+    (1): ReLU(inplace=True)
+    (2): MaxPool2d(kernel\_size=3, stride=2, padding=0, dilation=1,
+ceil\_mode=False)
+    (3): Conv2d(64, 192, kernel\_size=(5, 5), stride=(1, 1), padding=(2, 2))
+    (4): ReLU(inplace=True)
+    (5): MaxPool2d(kernel\_size=3, stride=2, padding=0, dilation=1,
+ceil\_mode=False)
+    (6): Conv2d(192, 384, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (7): ReLU(inplace=True)
+    (8): Conv2d(384, 256, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (9): ReLU(inplace=True)
+    (10): Conv2d(256, 256, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (11): ReLU(inplace=True)
+    (12): MaxPool2d(kernel\_size=3, stride=2, padding=0, dilation=1,
+ceil\_mode=False)
+  )
+  (avgpool): AdaptiveAvgPool2d(output\_size=(6, 6))
+  (classifier): Sequential(
+    (0): Dropout(p=0.5, inplace=False)
+    (1): Linear(in\_features=9216, out\_features=4096, bias=True)
+    (2): ReLU(inplace=True)
+    (3): Dropout(p=0.5, inplace=False)
+    (4): Linear(in\_features=4096, out\_features=4096, bias=True)
+    (5): ReLU(inplace=True)
+    (6): Linear(in\_features=4096, out\_features=2, bias=True)
+  )
+)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{criterion} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{CrossEntropyLoss}\PY{p}{(}\PY{p}{)}
+\PY{n}{optimizer} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{optim}\PY{o}{.}\PY{n}{Adam}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{lr} \PY{o}{=} \PY{l+m+mf}{0.0001}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{10}
+\PY{n}{running\PYZus{}loss\PYZus{}history} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{running\PYZus{}corrects\PYZus{}history} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{val\PYZus{}running\PYZus{}loss\PYZus{}history} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{val\PYZus{}running\PYZus{}corrects\PYZus{}history} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{e} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{epochs}\PY{p}{)}\PY{p}{:}
+  
+  \PY{n}{running\PYZus{}loss} \PY{o}{=} \PY{l+m+mf}{0.0}
+  \PY{n}{running\PYZus{}corrects} \PY{o}{=} \PY{l+m+mf}{0.0}
+  \PY{n}{val\PYZus{}running\PYZus{}loss} \PY{o}{=} \PY{l+m+mf}{0.0}
+  \PY{n}{val\PYZus{}running\PYZus{}corrects} \PY{o}{=} \PY{l+m+mf}{0.0}
+  
+  \PY{k}{for} \PY{n}{inputs}\PY{p}{,} \PY{n}{labels} \PY{o+ow}{in} \PY{n}{training\PYZus{}loader}\PY{p}{:}
+    \PY{n}{inputs} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+    \PY{n}{labels} \PY{o}{=} \PY{n}{labels}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+    \PY{n}{outputs} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{inputs}\PY{p}{)}
+    \PY{n}{loss} \PY{o}{=} \PY{n}{criterion}\PY{p}{(}\PY{n}{outputs}\PY{p}{,} \PY{n}{labels}\PY{p}{)}
+    
+    \PY{n}{optimizer}\PY{o}{.}\PY{n}{zero\PYZus{}grad}\PY{p}{(}\PY{p}{)}
+    \PY{n}{loss}\PY{o}{.}\PY{n}{backward}\PY{p}{(}\PY{p}{)}
+    \PY{n}{optimizer}\PY{o}{.}\PY{n}{step}\PY{p}{(}\PY{p}{)}
+    
+    \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{preds} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{outputs}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+    \PY{n}{running\PYZus{}loss} \PY{o}{+}\PY{o}{=} \PY{n}{loss}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}
+    \PY{n}{running\PYZus{}corrects} \PY{o}{+}\PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{preds} \PY{o}{==} \PY{n}{labels}\PY{o}{.}\PY{n}{data}\PY{p}{)}
+
+  \PY{k}{else}\PY{p}{:}
+    \PY{k}{with} \PY{n}{torch}\PY{o}{.}\PY{n}{no\PYZus{}grad}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+      \PY{k}{for} \PY{n}{val\PYZus{}inputs}\PY{p}{,} \PY{n}{val\PYZus{}labels} \PY{o+ow}{in} \PY{n}{validation\PYZus{}loader}\PY{p}{:}
+        \PY{n}{val\PYZus{}inputs} \PY{o}{=} \PY{n}{val\PYZus{}inputs}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+        \PY{n}{val\PYZus{}labels} \PY{o}{=} \PY{n}{val\PYZus{}labels}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+        \PY{n}{val\PYZus{}outputs} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{val\PYZus{}inputs}\PY{p}{)}
+        \PY{n}{val\PYZus{}loss} \PY{o}{=} \PY{n}{criterion}\PY{p}{(}\PY{n}{val\PYZus{}outputs}\PY{p}{,} \PY{n}{val\PYZus{}labels}\PY{p}{)}
+        
+        \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{val\PYZus{}preds} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{val\PYZus{}outputs}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{val\PYZus{}running\PYZus{}loss} \PY{o}{+}\PY{o}{=} \PY{n}{val\PYZus{}loss}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}
+        \PY{n}{val\PYZus{}running\PYZus{}corrects} \PY{o}{+}\PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{val\PYZus{}preds} \PY{o}{==} \PY{n}{val\PYZus{}labels}\PY{o}{.}\PY{n}{data}\PY{p}{)}
+      
+    \PY{n}{epoch\PYZus{}loss} \PY{o}{=} \PY{n}{running\PYZus{}loss}\PY{o}{/}\PY{n+nb}{len}\PY{p}{(}\PY{n}{training\PYZus{}loader}\PY{o}{.}\PY{n}{dataset}\PY{p}{)}
+    \PY{n}{epoch\PYZus{}acc} \PY{o}{=} \PY{n}{running\PYZus{}corrects}\PY{o}{.}\PY{n}{float}\PY{p}{(}\PY{p}{)}\PY{o}{/} \PY{n+nb}{len}\PY{p}{(}\PY{n}{training\PYZus{}loader}\PY{o}{.}\PY{n}{dataset}\PY{p}{)}
+    \PY{n}{running\PYZus{}loss\PYZus{}history}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{epoch\PYZus{}loss}\PY{p}{)}
+    \PY{n}{running\PYZus{}corrects\PYZus{}history}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{epoch\PYZus{}acc}\PY{p}{)}
+    
+    \PY{n}{val\PYZus{}epoch\PYZus{}loss} \PY{o}{=} \PY{n}{val\PYZus{}running\PYZus{}loss}\PY{o}{/}\PY{n+nb}{len}\PY{p}{(}\PY{n}{validation\PYZus{}loader}\PY{o}{.}\PY{n}{dataset}\PY{p}{)}
+    \PY{n}{val\PYZus{}epoch\PYZus{}acc} \PY{o}{=} \PY{n}{val\PYZus{}running\PYZus{}corrects}\PY{o}{.}\PY{n}{float}\PY{p}{(}\PY{p}{)}\PY{o}{/} \PY{n+nb}{len}\PY{p}{(}\PY{n}{validation\PYZus{}loader}\PY{o}{.}\PY{n}{dataset}\PY{p}{)}
+    \PY{n}{val\PYZus{}running\PYZus{}loss\PYZus{}history}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{val\PYZus{}epoch\PYZus{}loss}\PY{p}{)}
+    \PY{n}{val\PYZus{}running\PYZus{}corrects\PYZus{}history}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{val\PYZus{}epoch\PYZus{}acc}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{epoch :}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{p}{(}\PY{n}{e}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{training loss: }\PY{l+s+si}{\PYZob{}:.4f\PYZcb{}}\PY{l+s+s1}{, acc }\PY{l+s+si}{\PYZob{}:.4f\PYZcb{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{epoch\PYZus{}loss}\PY{p}{,} \PY{n}{epoch\PYZus{}acc}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{validation loss: }\PY{l+s+si}{\PYZob{}:.4f\PYZcb{}}\PY{l+s+s1}{, validation acc }\PY{l+s+si}{\PYZob{}:.4f\PYZcb{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{val\PYZus{}epoch\PYZus{}loss}\PY{p}{,} \PY{n}{val\PYZus{}epoch\PYZus{}acc}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+epoch : 1
+training loss: 0.0080, acc 0.5574
+validation loss: 0.0056, validation acc 0.7451
+epoch : 2
+training loss: 0.0057, acc 0.7705
+validation loss: 0.0060, validation acc 0.8366
+epoch : 3
+training loss: 0.0047, acc 0.8156
+validation loss: 0.0040, validation acc 0.8758
+epoch : 4
+training loss: 0.0037, acc 0.8484
+validation loss: 0.0046, validation acc 0.8627
+epoch : 5
+training loss: 0.0036, acc 0.8566
+validation loss: 0.0044, validation acc 0.8954
+epoch : 6
+training loss: 0.0029, acc 0.8934
+validation loss: 0.0046, validation acc 0.8889
+epoch : 7
+training loss: 0.0027, acc 0.9303
+validation loss: 0.0049, validation acc 0.8758
+epoch : 8
+training loss: 0.0021, acc 0.9016
+validation loss: 0.0047, validation acc 0.8954
+epoch : 9
+training loss: 0.0019, acc 0.9467
+validation loss: 0.0051, validation acc 0.8824
+epoch : 10
+training loss: 0.0021, acc 0.9180
+validation loss: 0.0044, validation acc 0.8954
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{running\PYZus{}loss\PYZus{}history}\PY{p}{,} \PY{n}{label} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{training loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{val\PYZus{}running\PYZus{}loss\PYZus{}history}\PY{p}{,} \PY{n}{label} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{validation loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.legend.Legend at 0x7f677e887af0>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Transfer Learning - AlexNet_files/Transfer Learning - AlexNet_13_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{running\PYZus{}corrects\PYZus{}history}\PY{p}{,} \PY{n}{label} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{training accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{val\PYZus{}running\PYZus{}corrects\PYZus{}history}\PY{p}{,} \PY{n}{label} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{validation accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.legend.Legend at 0x7f67925d0250>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Transfer Learning - AlexNet_files/Transfer Learning - AlexNet_14_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{requests}
+\PY{k+kn}{import} \PY{n+nn}{PIL}
+\PY{k+kn}{from} \PY{n+nn}{PIL} \PY{k+kn}{import} \PY{n}{Image}
+
+\PY{n}{url} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://dynaimage.cdn.cnn.com/cnn/c\PYZus{}fill,g\PYZus{}auto,w\PYZus{}1200,h\PYZus{}675,ar\PYZus{}16:9/https}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{3A}\PY{l+s+si}{\PYZpc{}2F}\PY{l+s+si}{\PYZpc{}2F}\PY{l+s+s1}{cdn.cnn.com}\PY{l+s+si}{\PYZpc{}2F}\PY{l+s+s1}{cnnnext}\PY{l+s+si}{\PYZpc{}2F}\PY{l+s+s1}{dam}\PY{l+s+si}{\PYZpc{}2F}\PY{l+s+s1}{assets}\PY{l+s+si}{\PYZpc{}2F}\PY{l+s+s1}{191016111719\PYZhy{}03\PYZhy{}record\PYZhy{}breaking\PYZhy{}ants.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{response} \PY{o}{=} \PY{n}{requests}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{url}\PY{p}{,} \PY{n}{stream} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+\PY{n}{img} \PY{o}{=} \PY{n}{Image}\PY{o}{.}\PY{n}{open}\PY{p}{(}\PY{n}{response}\PY{o}{.}\PY{n}{raw}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Transfer Learning - AlexNet_files/Transfer Learning - AlexNet_15_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{img} \PY{o}{=} \PY{n}{transform}\PY{p}{(}\PY{n}{img}\PY{p}{)} 
+\PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{im\PYZus{}convert}\PY{p}{(}\PY{n}{img}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.image.AxesImage at 0x7f677e56f0a0>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Transfer Learning - AlexNet_files/Transfer Learning - AlexNet_16_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{image} \PY{o}{=} \PY{n}{img}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}\PY{o}{.}\PY{n}{unsqueeze}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{output} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{image}\PY{p}{)}
+\PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{pred} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{output}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{classes}\PY{p}{[}\PY{n}{pred}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ant
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dataiter} \PY{o}{=} \PY{n+nb}{iter}\PY{p}{(}\PY{n}{validation\PYZus{}loader}\PY{p}{)}
+\PY{n}{images}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{dataiter}\PY{o}{.}\PY{n}{next}\PY{p}{(}\PY{p}{)}
+\PY{n}{images} \PY{o}{=} \PY{n}{images}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+\PY{n}{labels} \PY{o}{=} \PY{n}{labels}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+\PY{n}{output} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{images}\PY{p}{)}
+\PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{preds} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{output}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{25}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{idx} \PY{o+ow}{in} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{:}
+  \PY{n}{ax} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{,} \PY{n}{idx}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{xticks}\PY{o}{=}\PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{n}{yticks}\PY{o}{=}\PY{p}{[}\PY{p}{]}\PY{p}{)}
+  \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{im\PYZus{}convert}\PY{p}{(}\PY{n}{images}\PY{p}{[}\PY{n}{idx}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+  \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{)}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{classes}\PY{p}{[}\PY{n}{preds}\PY{p}{[}\PY{n}{idx}\PY{p}{]}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{n+nb}{str}\PY{p}{(}\PY{n}{classes}\PY{p}{[}\PY{n}{labels}\PY{p}{[}\PY{n}{idx}\PY{p}{]}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{green}\PY{l+s+s2}{\PYZdq{}} \PY{k}{if} \PY{n}{preds}\PY{p}{[}\PY{n}{idx}\PY{p}{]}\PY{o}{==}\PY{n}{labels}\PY{p}{[}\PY{n}{idx}\PY{p}{]} \PY{k}{else} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{red}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Transfer Learning - AlexNet_files/Transfer Learning - AlexNet_18_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}

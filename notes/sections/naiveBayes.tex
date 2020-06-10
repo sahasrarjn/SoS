@@ -1,4 +1,4 @@
-\section*{Naive Bayes}
+\section{Naive Bayes}
 
 Naive Bayes methods are a set of supervised learning algorithms based on applying Bayes' theorem with the "naive" assumption of conditional independence between every pair of features given the value of the class variable.\\ \\
 What actually Bayes' theorem is?
@@ -9,7 +9,7 @@ $P(A|B)$ is the probability of \textbf{A} happening, given that \textbf{B} has o
 \\ \\ 
 Without going to deep, let's see an example:
 
-\subsection*{The Golf Match Problem}
+\subsection{The Golf Match Problem}
     Consider the problem of playing golf, dataset for the same:
     \begin{figure}[h]
         \centering
@@ -37,14 +37,14 @@ Without going to deep, let's see an example:
         y = argmax_yP(y)\prod_{i=1}^{n}P(x_i|y)
     \end{equation}
 
-\subsection*{Types of Naive Bayes classifier:}
-    \subsubsection*{Miltinomial Naive Bayes:}
-        This is mostly used for the document classification problem, i.e whether a document belongs to the category of sports, politics, technology etc. The features/predictors used by the classifier are the frequency of the words present in the document.
+\subsection{Types of Naive Bayes classifier:}
+    \subsubsection{Miltinomial Naive Bayes:}
+        This is mostly used for the document classification problem, i.e whether a document belongs to the category of sports, politics, technology, etc. The features/predictors used by the classifier are the frequency of the words present in the document.
 
-    \subsubsection*{Bernoulli Naive Bayes}
+    \subsubsection{Bernoulli Naive Bayes}
         This is similar to the multinomial Naive Bayes but the predictors are boolean variables. The parameters that we use to predict the class variable take up only values yes or no, for example, if a word occurs in the text or not.
 
-    \subsubsection*{Gaussian Naive Bayes}
+    \subsubsection{Gaussian Naive Bayes}
         When the predictors take up a continuous value and are not discrete, we assume that these values are sampled from a gaussian distribution.
 
         \begin{figure}[h]
@@ -59,7 +59,7 @@ Without going to deep, let's see an example:
             P(x_i|y) = \frac{1}{\sqrt{2\pi\sigma_y^2}}e^{-\frac{(x_i-\mu_y)^2}{2\sigma_y^2}}
         \end{equation}
 
-\subsection*{Laplace Smoothing}
+\subsection{Laplace Smoothing}
     It is problematic when a frequency-based probability is zero because it will wipe out all the information in the other probabilities.\\ \\
     A solution would be \textbf{Laplace smoothing}, which is a technique for smoothing categorical data. A small-sample correction, or \textbf{pseudo-count}, will be incorporated in every probability estimate. Consequently, no probability will be zero. this is a way of regularizing Naive Bayes, and when the pseudo-count is zero, it is called Laplace smoothing. While in the general case it is often called \textbf{Lidstone smoothing.}
 
@@ -68,15 +68,15 @@ Without going to deep, let's see an example:
     \end{equation}
     where, $\alpha > 0$ the "pseudocount" is a smoothing parameter. And, $1/d$ is the \href{https://en.wikipedia.org/wiki/Discrete_uniform_distribution}{Uniform Probability}.
 
-    \subsubsection*{Note}
+    \subsubsection{Note}
     In practice, we use logs to represent probabilities:
     \begin{equation}
         \log{(P(x_1|y)P(x_2|y)...P(x_n|y))} = \log{P(x_1|y)} + \log{P(x_2|y)} +...+ \log{P(x_n|y)}
     \end{equation}
 
 
-\subsection*{Applications}
-    Naive Bayes algorithms are mostly used in sentiment analysis, spam filtering, recommendation systems etc. They are fast and easy to implement but their biggest disadvantage is that the requirement of predictors to be independent. In most of the real-life cases, the predictors are dependent, this hinders the performance of the classifier.
+\subsection{Applications}
+    Naive Bayes algorithms are mostly used in sentiment analysis, spam filtering, recommendation systems, etc. They are fast and easy to implement but their biggest disadvantage is that the requirement of predictors to be independent. In most of the real-life cases, the predictors are dependent, this hinders the performance of the classifier.
 
 \subsection*{Worked-out Implementation\footnote[2]{ \textbf{Output:}\\
 23 columns, after dropping NA, 22\\

@@ -41,7 +41,7 @@
         \includegraphics[scale=1]{important-net.png}
       \end{figure}
 
-      For any prediction which involve a straight line as decision boundary, we can represent it with a neural network without any hidden layer but otherwise we'll have to include few hidden layers. An important point to note is that we can represent almost any distribution with cenrain arrangement of neural network.
+      For any prediction which involves a straight line as decision boundary, we can represent it with a neural network without any hidden layer but otherwise, we'll have to include few hidden layers. An important point to note is that we can represent almost any distribution with a certain arrangement of Neural Network.
 
   \section{Multiclass Classification}
     To classify data into multiple classes, we'll have to define out set of resulting classes as y:
@@ -59,7 +59,7 @@
       \item K = numbet of output unit/classes
     \end{itemize}
 
-    Cost function for neural networks will be slightly more complicated as it involves few other factors of 'K' and 'L' defined earlier.
+    The cost function for neural networks will be slightly more complicated as it involves a few other factors of 'K' and 'L' defined earlier.
 
     \begin{equation}
       J(\theta) = -\frac{1}{m}\sum_{i=1}^{m}\sum_{k=1}^{K}y_k^{(i)}\log((h_\theta(x^{(i)}))_k) + (1-y_k^{(i)})\log(1-(h_\theta(x^{(i)}))_k) + \frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^{s_{l+1}} (\theta_{j,i}^{(L)})^2
@@ -69,7 +69,7 @@
     \begin{itemize}
       \item the double sum simply adds up the logistic regression costs calculated for each cell in the output layer.
       \item the triple sum simply adds up the squares of all the individual $\theta$s in the entire network.
-      \item the i in the triple sum does not refer to training example i.
+      \item the I in the triple sum does not refer to training example i.
     \end{itemize}
 
   \section{Backpropagation Algorithm}
@@ -113,7 +113,7 @@
     \begin{itemize}
       \item Number of input units = dimension of features $x^{(i)}$
       \item Number of output units = number of classes
-      \item Number of hidden units per layer = usually more the better (must balance with cost of computation as it increases with more hidden units)
+      \item Number of hidden units per layer = usually more the better (must balance with the cost of computation as it increases with more hidden units)
       \item Defaults: 1 hidden layer. If you have more than 1 hidden layer, then it is recommended that you have the same number of units in every hidden layer.
     \end{itemize}
 
@@ -126,3 +126,5 @@
         \item Use gradient checking to confirm that your backpropagation works. Then disable gradient checking.
         \item Use gradient descent or a built-in optimization function to minimize the cost function with the weights in theta.
       \end{enumerate}
+
+  % \lstinputlisting[language=octave, caption=Octave implementation for section of Neural Networks]{3.NeuralNetwork.m}
