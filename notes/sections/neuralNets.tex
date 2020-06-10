@@ -28,6 +28,7 @@
   \\From these equations, we can conclude that we will get a matrix for each layer to calculate the weight for the second layer.
 
   \section{Intutions}
+    We'll will consider generating few bit-operators using our notion of perceptrons.
     \subsection{OR Function}
       \begin{figure}[h]
         \centering
@@ -119,7 +120,7 @@
 
     \subsubsection{Training a Neural Network}
       \begin{enumerate}
-        \item Randomly initialize the weights\footnote[3]{A good choice for $e_init = \frac{\sqrt{6}}{\sqrt{L_in + L_out}}$}
+        \item Randomly initialize the weights\footnote[3]{A good choice for $e_{init} = \frac{\sqrt{6}}{\sqrt{L_in + L_out}}$}
         \item Implement forward propagation to get $h_\theta(x(i))$ for any $x^{(i)}$
         \item Implement the cost function
         \item Implement backpropagation to compute partial derivatives

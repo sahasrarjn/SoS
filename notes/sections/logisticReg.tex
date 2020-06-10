@@ -23,8 +23,9 @@
     \end{figure}
 
   \subsection{Decesion Boundary}
-    The decision boundary is the line that separates the area where y=0 and where y=1.\\
-    It is similar to the decision boundary for linear regression, the only difference is the distribution of values (linear and sigmoid)
+    A decision boundary is the region of a problem space in which the output label of a classifier is ambiguous. If the decision surface is a hyperplane, then the classification problem is linear, and the classes are linearly separable. 
+\\
+    It is similar to the decision boundary for linear regression (which was a straight line), the only difference is the distribution of values (linear and sigmoid)
 
 \section{Logistic Regression Model}
 
@@ -52,7 +53,7 @@
     \end{equation}
     A vectorised implementation is: \\ \\
     $h = g(X\theta)$\\
-    $J(\theta) = \frac{1}{m}.(-y^T\log{h}-(1-y)^T\log{1-h})$
+    $J(\theta) = \frac{1}{m}.(-(y^T)\log{(h)}-(1-y)^T\log{(1-h)})$
     \\ \\
     Vectorised implementation for Gradient Descent: \\ \\
     $\theta := \theta - \frac{\alpha}{m}X^T(g(X\theta)-y)$
